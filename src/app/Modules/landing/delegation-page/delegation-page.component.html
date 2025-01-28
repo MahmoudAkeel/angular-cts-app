@@ -1,0 +1,141 @@
+<div class="container-fluid">
+  <!-- Title -->
+  <div class="d-flex justify-content-between">
+    <h1 class="page-title">Delegations</h1>
+  </div>
+  <!-- Form -->
+  <form [formGroup]="delegationForm">
+    <div class="d-flex align-items-end delegation">
+      <!-- Full Name -->
+      <div class="flex-1">
+        <div class="form-group">
+          <label for="ddlUsers" class="form-label">Full Name*</label>
+          <select id="ddlUsers" formControlName="userId" class="form-select select2" *ngIf="contacts.length">
+            <option *ngFor="let contact of contacts" [value]="contact.id">
+              {{ contact.fullName }}
+            </option>
+          </select>
+          <div *ngIf="delegationForm.controls['userId'].invalid && delegationForm.controls['userId'].touched" class="text-danger">
+            Full Name is required
+          </div>
+        </div>
+      </div>
+      <!-- Date Pickers -->
+      <div class="flex-1">
+        <div class="form-group">
+          <label for="datepicker1" class="form-label">From*</label>
+          <input class="form-control date-picker"
+                 formControlName="fromDate"
+                 placeholder="yyyy-mm-dd"
+                 name="dp1"
+                 ngbDatepicker
+                 #d1="ngbDatepicker"
+                 (click)="d1.toggle()" />
+          <div *ngIf="delegationForm.controls['fromDate'].invalid && delegationForm.controls['fromDate'].touched" class="text-danger">
+            From date is required
+          </div>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div class="form-group">
+          <label for="datepicker2" class="form-label">To*</label>
+          <input class="form-control date-picker"
+                 formControlName="toDate"
+                 placeholder="yyyy-mm-dd"
+                 name="dp2"
+                 ngbDatepicker
+                 #d2="ngbDatepicker"
+                 (click)="d2.toggle()" />
+          <div *ngIf="delegationForm.controls['toDate'].invalid && delegationForm.controls['toDate'].touched" class="text-danger">
+            To date is required
+          </div>
+        </div>
+        <!--</div>-->
+      </div>
+      <!-- Privacy -->
+      <div class="flex-1">
+        <div class="form-group">
+          <label for="ddlPrivacy" class="form-label">Privacy*</label>
+          <select id="ddlPrivacy" formControlName="privacyId" class="form-select select2">
+            <option *ngFor="let item of privacy || []" [value]="item.id">
+              {{ item.text }}
+            </option>
+          </select>
+          <div *ngIf="delegationForm.controls['privacyId'].invalid && delegationForm.controls['privacyId'].touched" class="text-danger">
+            Privacy is required
+          </div>
+        </div>
+      </div>
+      <!-- Checkboxes -->
+      <div class="mb-2">
+        <div class="form-group form-check">
+          <input class="form-check-input" type="checkbox" formControlName="showOldCorrespondence" />
+          <label class="form-check-label" for="oldDocuments">Show old documents</label>
+        </div>
+      </div>
+      <div class="mb-2">
+        <div class="form-group form-check">
+          <input class="form-check-input" type="checkbox" formControlName="allowSign" />
+          <label class="form-check-label" for="canSign">Can sign</label>
+        </div>
+      </div>
+    </div>
+    <div>
+      <!-- Categories -->
+      <div class="flex-1">
+        <div class="form-group">
+          <label for="ddlCategories" class="form-label">Category*</label>
+          <select id="ddlCategories" formControlName="categoryId" class="form-select select2" multiple>
+            <option *ngFor="let cat of categories || []" [value]="cat.id">
+              {{ cat.text }}
+            </option>
+          </select>
+          <div *ngIf="delegationForm.controls['categoryId'].invalid && delegationForm.controls['categoryId'].touched" class="text-danger">
+            Category is required
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end gap-3 mt-1">
+      <button type="button" class="btn btn-secondary btn-lg" (click)="clear()">Clear</button>
+      <button type="button" class="btn btn-primary btn-lg" (click)="onSave()">
+        <i class="fa fa-save"></i> Save
+      </button>
+    </div>
+  </form>
+  <hr />
+  <!-- Table -->
+  <div class="shadow table-container">
+    <table class="table" *ngIf="data && data.length > 0" datatable [dtOptions]="dtOptions">
+      <thead>
+        <tr>
+          <th>Delegate to</th>
+          <th>From date</th>
+          <th>To date</th>
+          <th>Created date</th>
+          <th>Privacy</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data" >
+          <td><span class="bold">{{ row.toUser }}</span></td>
+          <td>{{ row.fromDate }}</td>
+          <td>{{ row.toDate }}</td>
+          <td>{{ row.createdDate }}</td>
+          <td>{{ row.privacyName }}</td>
+          <td>
+            <button type="button" class="btn" (click)="onEdit(row)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button type="button" class="btn" (click)="onDelete(row)">
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <app-toaster></app-toaster>
+  </div>
+</div>
