@@ -113,6 +113,7 @@ export class DelegationPageComponent implements OnInit {
       ordering: false,
     };
   }
+
   categoryValidator(control: FormControl): { [key: string]: boolean } | null {
     if (control.value && control.value.includes(0)) {
       return { 'invalidCategory': true };  // Invalid if 'id = 0' is selected
@@ -307,6 +308,7 @@ export class DelegationPageComponent implements OnInit {
     const [day, month, year] = dateStr.split('/');
     return { year: +year, month: +month, day: +day };
   }
+
   resetDropDowns() {
     this.delegationForm.patchValue({
       userId: this.contacts.length > 0 ? this.contacts[0] ?.id : null, 

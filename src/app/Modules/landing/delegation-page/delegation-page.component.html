@@ -119,7 +119,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of data" >
+        <tr *ngFor="let row of data">
           <td><span class="bold">{{ row.toUser }}</span></td>
           <td>{{ row.fromDate }}</td>
           <td>{{ row.toDate }}</td>
@@ -137,5 +137,9 @@
       </tbody>
     </table>
     <app-toaster></app-toaster>
+    <!-- Message for No Data Found -->
+    <div *ngIf="data && data.length === 0" class="text-center mt-3">
+      <p>No data found</p>
+    </div>
   </div>
 </div>
