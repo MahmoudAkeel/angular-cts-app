@@ -1,0 +1,113 @@
+        <!--title-->
+        <div class="d-flex justify-content-between mb-3">
+            <h1 class="page-title">Search</h1>
+        </div>
+
+
+        <!--form-->
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <!--date-->
+                    <div class="form-group">
+                        <label for="datepicker" class="form-label">Register date</label>
+                        <input
+                        class="form-control date-picker"
+                        placeholder="yyyy-mm-dd"
+                        name="dp"
+                        [(ngModel)]="regmodel"
+                        ngbDatepicker
+                        #regDate="ngbDatepicker"
+                        (click)="regDate.toggle()"
+                      />
+                    </div>
+
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <!--text-->
+                    <div class="form-group">
+                        <label for="datepicker" class="form-label">Reference number</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <!--select2-->
+                    <div class="form-group">
+                        <label for="select2Example" class="form-label">Category</label>
+                        <select class="form-select select2">
+                            <option *ngFor="let cat of Category" [value]="cat.id">
+                                {{ cat.name }}
+                              </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="form-group">
+                        <label for="select2Example" class="form-label">Sending entity</label>
+                        <select class="form-select select2">
+                            <option *ngFor="let sen of Sending" [value]="sen.id">
+                                {{ sen.name }}
+                              </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="form-group">
+                        <label for="datepicker" class="form-label">Tags</label>
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="form-group">
+                        <label for="datepicker" class="form-label">From</label>
+                        <input
+                        class="form-control date-picker"
+                        placeholder="yyyy-mm-dd"
+                        name="dp"
+                        [(ngModel)]="fromModal"
+                        ngbDatepicker
+                        #d1="ngbDatepicker"
+                        (click)="d1.toggle()"
+                      />
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="form-group">
+                        <label for="datepicker" class="form-label">To</label>
+                        <input
+                        class="form-control date-picker"
+                        placeholder="yyyy-mm-dd"
+                        name="dp"
+                        [(ngModel)]="tomodel"
+                        ngbDatepicker
+                        #d2="ngbDatepicker"
+                        (click)="d2.toggle()"
+                      />
+                  </div>
+                    </div>
+             
+
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="form-group">
+                        <label for="select2Example" class="form-label">Receiving entity</label>
+                        <select class="form-select select2">
+                            <option *ngFor="let rec of Receiving" [value]="rec.id">
+                                {{ rec.name }}
+                              </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="datepicker" class="form-label">Subject</label>
+                        <textarea class="form-control"></textarea>
+                    </div>
+                </div>
+
+                </div>
+            <!--actions-->
+            <div class="d-flex justify-content-end gap-3 mt-2">
+                <button class="btn btn-secondary btn-lg">Clear</button>
+                <button class="btn btn-primary btn-lg"><i class="fa fa-search"></i> Search</button>
+            </div>

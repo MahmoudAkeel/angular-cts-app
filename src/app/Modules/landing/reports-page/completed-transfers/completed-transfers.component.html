@@ -1,0 +1,139 @@
+<div class="container-fluid">
+  <!-- Title Section -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Completed transfers</h1>
+  </div>
+
+  <!-- Search Form -->
+  <form class="search-form" (ngSubmit)="search()" #searchForm="ngForm">
+    <div class="row">
+      <!-- Structures Select -->
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label class="form-label">Structure</label>
+          <ng-select [items]="structures" [multiple]="true" [closeOnSelect]="false" [searchable]="true" bindLabel="name"
+            bindValue="id" [(ngModel)]="selectedStructures" [ngModelOptions]="{standalone: true}"
+            [loading]="isLoadingStructures" (search)="onStructureSearch($event)" class="select2-control">
+            <ng-template ng-option-tmp let-item="item">
+              <i class="fas fa-building me-2"></i>
+              {{item.name}}
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+
+      <!-- Users Select -->
+      <div class="col-md-6 mb-3">
+        <div class="form-group">
+          <label class="form-label">User</label>
+          <ng-select [items]="users" [multiple]="true" [closeOnSelect]="false" [searchable]="true" bindLabel="fullName"
+            bindValue="id" [(ngModel)]="selectedUsers" [ngModelOptions]="{standalone: true}" [loading]="isLoadingUsers"
+            (search)="onUserSearch($event)" class="select2-control">
+            <ng-template ng-option-tmp let-item="item">
+              <i class="fas fa-user me-2"></i>
+              {{getUserDisplayName(item)}}
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Date Controls -->
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">From Date</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="dd/mm/yyyy" name="dp1" [(ngModel)]="fromDate" ngbDatepicker
+              #d1="ngbDatepicker">
+            <button class="btn btn-outline-secondary" (click)="d1.toggle()" type="button">
+              <i class="fas fa-calendar"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label class="form-label">To Date</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="dd/mm/yyyy" name="dp2" [(ngModel)]="toDate" ngbDatepicker
+              #d2="ngbDatepicker">
+            <button class="btn btn-outline-secondary" (click)="d2.toggle()" type="button">
+              <i class="fas fa-calendar"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkbox -->
+      <div class="col-md-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="isOverdue" name="isOverdue" [(ngModel)]="isOverdue">
+          <label class="form-check-label" for="isOverdue">
+            Show Overdue Only
+          </label>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="col-md-3">
+        <div class="action-buttons">
+          <button type="button" class="btn btn-light me-2" (click)="clear()">
+            <i class="fas fa-times me-1"></i> Clear
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search me-1"></i> Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <hr />
+  <!-- Table -->
+  <div class="shadow table-container overflow-x-auto">
+    <table id="inprogress-report-table" class="table" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Reference number</th>
+          <th>Subject</th>
+          <th>From (Structure / User)</th>
+          <th>To (Structure / User)</th>
+          <th>Transfer date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of reports">
+          <td>{{item.categoryId}}</td>
+          <td>{{item.referenceNumber}}</td>
+          <td>{{item.subject}}</td>
+          <td>{{joinStructureAndUser(item.fromStructure, item.fromUser)}}</td>
+          <td>{{joinStructureAndUser(item.toStructure, item.toUser)}}</td>
+          <td>{{item.transferDate}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Only show pagination if there's data -->
+    <div class="d-flex justify-content-between align-items-center" *ngIf="reports && reports.length > 0">
+      <div>
+        Showing {{startIndex}} to {{endIndex}} of {{totalItems}} entries
+      </div>
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="previousPage()">Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+            <a class="page-link" (click)="goToPage(page)">{{page}}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="nextPage()">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
