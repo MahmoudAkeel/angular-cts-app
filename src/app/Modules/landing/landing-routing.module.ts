@@ -11,7 +11,8 @@ import { GuidelinePageComponent } from './guideline-page/guideline-page.componen
 import { CompletedTransfersComponent } from './reports-page/completed-transfers/completed-transfers.component';
 import { InprogressTransfersComponent } from './reports-page/inprogress-transfers/inprogress-transfers.component';
 import { InProgressCorrespondencesComponent } from './reports-page/in-progress-correspondences/in-progress-correspondences.component';
-
+import { DashboardComponent } from './bam-page/dashboard/dashboard.component';
+import { SystemDashboardComponent } from './bam-page/system-dashboard/system-dashboard.component';
 const routes: Routes = [
   {
     path: '',
@@ -56,6 +57,14 @@ const routes: Routes = [
   {
     path: 'bam',
     component: BamPageComponent,
+  },
+  {
+    path: 'bam/dashboard',
+    component: DashboardComponent,
+  },
+  {
+    path: 'bam/system-dashboard',
+    component: SystemDashboardComponent,
   }
 ];
 
