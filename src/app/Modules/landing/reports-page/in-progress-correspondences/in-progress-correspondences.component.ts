@@ -16,9 +16,10 @@ import { LookupsService } from '../../../../services/lookups.service';
 import { InprogressCorrespondence } from '../../../../models/inprogress-correspondence.model';
 import { Priority } from '../../../../models/priority.model';
 @Component({
-  selector: 'app-in-progress-correspondences',
-  templateUrl: './in-progress-correspondences.component.html',
-  styleUrls: ['./in-progress-correspondences.component.css']
+    selector: 'app-in-progress-correspondences',
+    templateUrl: './in-progress-correspondences.component.html',
+    styleUrls: ['./in-progress-correspondences.component.css'],
+    standalone: false
 })
 export class InProgressCorrespondencesComponent implements OnInit, OnDestroy {
 

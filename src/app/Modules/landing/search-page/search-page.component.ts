@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-search-page',
-  templateUrl: './search-page.component.html',
-  styleUrl: './search-page.component.scss'
+    selector: 'app-search-page',
+    templateUrl: './search-page.component.html',
+    styleUrl: './search-page.component.scss',
+    standalone: false
 })
 export class SearchPageComponent {
   regmodel: NgbDateStruct | undefined;

@@ -15,9 +15,10 @@ import { Priority } from '../../../models/priority.model';
 import { User } from '../../../models/user.model';
 
 @Component({
-  selector: 'app-delegation-page',
-  templateUrl: './delegation-page.component.html',
-  styleUrls: ['./delegation-page.component.scss']
+    selector: 'app-delegation-page',
+    templateUrl: './delegation-page.component.html',
+    styleUrls: ['./delegation-page.component.scss'],
+    standalone: false
 })
 export class DelegationPageComponent implements OnInit {
   fromModal: NgbDateStruct | undefined;

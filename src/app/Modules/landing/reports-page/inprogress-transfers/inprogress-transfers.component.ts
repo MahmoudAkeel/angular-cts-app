@@ -17,7 +17,8 @@ import { ApiResponse } from '../../../../models/api-response.model';
 @Component({
     selector: 'app-inprogress-transfers',
     templateUrl: './inprogress-transfers.component.html',
-    styleUrls: ['./inprogress-transfers.component.css']
+    styleUrls: ['./inprogress-transfers.component.css'],
+    standalone: false
 })
 export class InprogressTransfersComponent implements OnInit, OnDestroy {
     @ViewChild(DataTableDirective, { static: false })
