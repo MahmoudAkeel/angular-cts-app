@@ -13,6 +13,7 @@
     </div>
 </div>
 
+<button mat-button (click)="showMailDetails()">just for testing remove this btn</button>
 <!-- Tabs -->
 <div class="nav nav-tabs mt-3" role="tablist">
     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-new" type="button" role="tab" aria-selected="true"><i class="fa fa-plus-circle"></i>New</button>
@@ -28,7 +29,7 @@
             No data available in the table.
         </div>
 
-        <table class="table light-text" datatable [dtOptions]="dtOptions" *ngIf="!loading && newItems.length > 0">
+        <table class="table table-text light-text" datatable [dtOptions]="dtOptions" *ngIf="!loading && newItems.length > 0">
             <thead>
                 <tr>
                     <th>Subject</th>
@@ -41,8 +42,8 @@
             <tbody>
                 <tr *ngFor="let item of newItems">
                     <td>
-                        <p class="text-primary bold">{{ item.subject }}</p>
-                        <p class="text-secondary">{{ item.details }}</p>
+                        <p (click)="showMailDetails()" class="text-primary bold">{{ item.subject }}</p>
+                        <p (click)="showMailDetails()" class="text-secondary">{{ item.details }}</p>
                     </td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.ref }}</td>

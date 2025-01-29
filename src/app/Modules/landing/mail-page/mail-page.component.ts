@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MailDetailsDialogComponent } from '../mail-details-dialog/mail-details-dialog.component';
 interface ApiResponseItem {
   id: number;
   categoryId: number;
@@ -33,7 +35,7 @@ export class MailPageComponent implements OnInit{
 
   loading: boolean = true; // Loading state
 
-  constructor(private http: HttpClient,private router:Router) {
+  constructor(private http: HttpClient,private router:Router, private dialog: MatDialog) {
     this.accessToken  = localStorage.getItem('access_token');
   }
 
@@ -189,5 +191,14 @@ export class MailPageComponent implements OnInit{
   }
   active = 1;
  
+
+  showMailDetails() {
+    this.dialog.open(MailDetailsDialogComponent, {
+      disableClose: true,
+      width: '90%',
+      height: '90%',
+      data: { message: 'Hello from parent component!' }
+    });
+  }
 }
 
