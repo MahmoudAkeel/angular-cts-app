@@ -69,7 +69,7 @@
                 <div class="col-sm-12">
                   <div class="form-group">
                     <label class="form-label">Subject</label>
-                    <textarea class="form-control" maxlength="2000" rows="5" [disabled]="true">{{data.rowData.subject}}</textarea>
+                    <textarea class="form-control" maxlength="2000" rows="5" [disabled]="true">{{data.rowData.subject||''}}</textarea>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -128,12 +128,18 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-sm-12">
+                <!--<div class="col-sm-12">
                   <div class="form-group">
                     <label class="form-label">Body</label>
-                    <textarea class="form-control" maxlength="2000" rows="5" [disabled]="true">{{data.rowData.id}}</textarea>
+                    <textarea class="form-control" maxlength="2000" rows="5" [disabled]="true">{{data.rowData.body}}</textarea>
                   </div>
-                </div>
+                </div>-->
+                <!--<div class="col-sm-12">
+                  <div class="form-group">
+                    <label class="form-label">Body</label>
+                     <input class="form-control" type="text" [value]="data.rowData.tags" [disabled]="true" />
+                  </div>
+                </div>-->
               </div>
             </form>
           </div>
