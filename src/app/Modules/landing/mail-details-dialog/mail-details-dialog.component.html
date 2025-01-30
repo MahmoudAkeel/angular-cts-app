@@ -1,6 +1,6 @@
 <div class="dialog-header">
     <h2 mat-dialog-title>Int/2025/000011</h2>
-    <button mat-button mat-dialog-close><i class="fa fa-times"></i></button>
+    <button mat-button mat-dialog-close class="btn btn-transparent"><i class="fa fa-times"></i></button>
 </div>
 
 <mat-dialog-content>
@@ -96,7 +96,31 @@
 
 
                 <div [ngClass]="{'tab-pane': true, 'fade': true, 'show active': activeTabIndex === 2}">
-                    <div class="p-3"></div>
+                    <div class="p-3">
+                        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodeToggle
+                                class="mat-tree-node" [ngStyle]="{'--level': treeControl.getLevel(node)}">
+                                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                                    <i class="fa" [ngClass]="treeControl.isExpanded(node) ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                                </button>
+                                <i class="far fa-folder"></i> 
+                                <!--folder name-->
+                                <span>{{node.name}}</span>
+                            </mat-tree-node>
+
+                            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle class="mat-tree-node"
+                                [ngStyle]="{'--level': treeControl.getLevel(node)}">
+                                <!--pdf link here-->
+                                <a href="#" class="mx-2 align-items-center"
+                                [ngClass]="{'selected': selectedNode === node}" 
+                                (click)="selectNode(node, $event)">
+                                    <i class="far fa-file"></i> 
+                                    <!--file name-->
+                                    <span>{{node.name}}</span>
+                                </a>
+                            </mat-tree-node>
+                        </mat-tree>
+                    </div>
                 </div>
 
                 <div [ngClass]="{'tab-pane': true, 'fade': true, 'show active': activeTabIndex === 3}">
@@ -123,7 +147,8 @@
                 </div>
 
                 <div [ngClass]="{'tab-pane': true, 'fade': true, 'show active': activeTabIndex === 4}">
-                    <div class="p-3"></div>
+                    <div class="p-3">
+                    </div>
                 </div>
                 <div [ngClass]="{'tab-pane': true, 'fade': true, 'show active': activeTabIndex === 5}">
                     <div class="p-3"></div>
@@ -134,7 +159,7 @@
                 <div [ngClass]="{'tab-pane': true, 'fade': true, 'show active': activeTabIndex === 7}">
                     <div class="p-3"></div>
                 </div>
-                
+
                 <div [ngClass]="{'tab-pane': true, 'fade': true, 'show active': activeTabIndex === 8}">
                     <div class="p-3">
                         <ul class="timeline">
@@ -150,14 +175,16 @@
                                     <span class="m-0 text-primary">Title 1</span>
                                     <span class="bold text-secondary">2002</span>
                                 </div>
-                                <p class="timeline-content">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+                                <p class="timeline-content">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                </p>
                             </li>
                             <li>
                                 <div class="timeline-header">
                                     <span class="m-0 text-primary">Title 1</span>
                                     <span class="bold text-secondary">2002</span>
                                 </div>
-                                <p class="timeline-content">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas itaque hic
+                                <p class="timeline-content">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                    Quas itaque hic
                                     quibusdam fugiat est numquam harum, accusamus suscipit consequatur laboriosam!</p>
                             </li>
                         </ul>
@@ -171,3 +198,4 @@
         </div>
     </div>
 </mat-dialog-content>
+                              

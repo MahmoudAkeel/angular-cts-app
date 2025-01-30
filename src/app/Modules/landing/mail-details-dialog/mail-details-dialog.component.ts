@@ -4,10 +4,25 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 
+import { MatTreeModule } from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+
+interface TreeNode {
+  name: string;
+  children?: TreeNode[];
+}
+
+interface FlatTreeNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
+
 @Component({
   selector: 'app-mail-details-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, NgbDatepickerModule, DataTablesModule],
+  imports: [CommonModule, MatDialogModule, NgbDatepickerModule, DataTablesModule, MatTreeModule],
   templateUrl: './mail-details-dialog.component.html',
   styleUrls: ['./mail-details-dialog.component.scss']
 })
@@ -18,10 +33,57 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
   tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
   isScrollable: boolean = false;
   activeTabIndex: number = 0;
+  selectedNode: any = null;
 
   dtOptions: DataTables.Settings = {};
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef) { }
+  treeControl: FlatTreeControl<FlatTreeNode>;
+  treeFlattener: MatTreeFlattener<TreeNode, FlatTreeNode>;
+  dataSource: MatTreeFlatDataSource<TreeNode, FlatTreeNode>;
+
+  TREE_DATA: TreeNode[] = [
+    {
+      name: 'Documents',
+      children: [
+        {
+          name: 'Original document',
+          children: [
+            { name: '_نموذج مراسلة خارجية2.pdf' }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'Documents',
+      children: [
+        {
+          name: 'Original document',
+          children: [
+            { name: '_نموذج مراسلة خارجية2.pdf' },
+            { name: '_نموذج مراسلة خارجية2.pdf' },
+            { name: '_نموذج مراسلة خارجية2.pdf' }
+          ]
+        }
+      ]
+    }
+  ];
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef) {
+    this.treeFlattener = new MatTreeFlattener(
+      this._transformer,
+      (node: FlatTreeNode) => node.level,
+      (node: FlatTreeNode) => node.expandable,
+      (node: TreeNode) => node.children
+    );
+
+    this.treeControl = new FlatTreeControl<FlatTreeNode>(
+      (node: FlatTreeNode) => node.level,
+      (node: FlatTreeNode) => node.expandable
+    );
+
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.dataSource.data = this.TREE_DATA;
+  }
 
   ngOnInit() {
     this.initDtOptions();
@@ -83,6 +145,22 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
   }
 
 
+  private _transformer = (node: TreeNode, level: number): FlatTreeNode => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      level: level
+    };
+  };
+
+
+  hasChild = (_: number, node: FlatTreeNode) => node.expandable;
+
+
+  selectNode(node: any, event: Event) {
+      event.preventDefault();
+      this.selectedNode = node;
+  }
 
   Items = [
     {
