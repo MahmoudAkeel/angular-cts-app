@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ApiResponse } from '../../../../models/api-response.model';
 import { InprogressReport } from '../../../../models/inprogress-report.model';
 import { Structure } from '../../../../models/structure.model';
@@ -88,18 +88,18 @@ export class CompletedTransfersComponent implements OnInit {
     this.initDtOptions();
     this.loadStructures();
     this.loadReports();
-
-    const today = new Date();
-    this.fromDate = {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-      day: today.getDate()
-    };
-    this.toDate = {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-      day: today.getDate()
-    };
+    this.loadUsers();
+    //const today = new Date();
+    // this.fromDate = {
+    //   year: today.getFullYear(),
+    //   month: today.getMonth() + 1,
+    //   day: today.getDate()
+    // };
+    // this.toDate = {
+    //   year: today.getFullYear(),
+    //   month: today.getMonth() + 1,
+    //   day: today.getDate()
+    // };
   }
 
   initDtOptions() {
@@ -250,18 +250,19 @@ export class CompletedTransfersComponent implements OnInit {
     this.structureError = '';
     this.userError = '';
     this.isOverdue = false;
-
-    const today = new Date();
-    this.fromDate = {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-      day: today.getDate()
-    };
-    this.toDate = {
-      year: today.getFullYear(),
-      month: today.getMonth() + 1,
-      day: today.getDate()
-    };
+    this.fromDate=undefined;
+    this.toDate=undefined;
+    // const today = new Date();
+    // this.fromDate = {
+    //   year: today.getFullYear(),
+    //   month: today.getMonth() + 1,
+    //   day: today.getDate()
+    // };
+    // this.toDate = {
+    //   year: today.getFullYear(),
+    //   month: today.getMonth() + 1,
+    //   day: today.getDate()
+    // };
 
     this.currentPage = 1;
     this.loadReports();

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { MailDetailsDialogComponent } from '../mail-details-dialog/mail-details-dialog.component';
 interface ApiResponseItem {
   id: number;
@@ -131,7 +131,7 @@ export class MailPageComponent implements OnInit{
 
   
     const formData = new FormData();
-    formData.append('length', '100');
+    formData.append('length', '1000');
     formData.append('structureId', this.structureId);
     // formData.append('draw', '1');
     // formData.append('NodeId', '34');
