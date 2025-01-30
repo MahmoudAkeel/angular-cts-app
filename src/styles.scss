@@ -278,9 +278,12 @@ p {
 		box-shadow: 0px 13px 36px #69696929 !important;
 		border-radius: 10px;
 		border: 1px solid transparent;
-		padding: 1rem;
+		padding: 0 1rem;
 		font-size: 14px;
 		background-color: $background-color_1 !important;
+	}
+	textarea.from-control {
+		padding: 1rem;
 	}
 	.form-control[name="username"] {
 		background-image: url('assets/images/icons/user.svg');
@@ -574,13 +577,14 @@ input[type="number"] {
 textarea.form-control {
 	min-height: 150px;
 	resize: none;
+	padding: 1rem;
 }
 .form-control {
 	background-color: $background-color_6;
 	border: 1px solid transparent;
 	border-radius: 10px;
 	height: 42px;
-	padding: 1rem;
+	padding: 0 1rem;
 	font-size: 14px;
 	box-shadow: none !important;
 	&:focus {
@@ -808,6 +812,7 @@ span.glyphicon.glyphicon-chevron-up {
 		border-left-width: 0;
 		border-top-left-radius: 10px;
 		padding: 0.75rem;
+		font-size: 14px;
 		i {
 			font-size: 14px;
 		}
@@ -1286,4 +1291,26 @@ span.glyphicon.glyphicon-chevron-up {
     height: calc(100% - 105px);
     overflow: auto;
     padding: 0.5rem 2rem;
+}.charts .card {
+    border: 0;
+    box-shadow: 0px 3px 6px #69696929;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.charts .title {
+    font-size: 14px;
+}
+
+.cdk-overlay-pane.mat-mdc-dialog-panel {
+	max-width: unset !important;
+}
+
+.static-pagination .dataTables_paginate.paging_full_numbers {
+	position: static;
+	width: 100%;
+	text-align: center;
+	margin: 1rem 0;
 }

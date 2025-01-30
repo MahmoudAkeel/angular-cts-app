@@ -1,50 +1,50 @@
 <div class="container-fluid h-100 p-0">
-    <div class="row h-100 m-0">
-        <div class="col-md-6 p-0">
-            <div class="logo-section layer">
-                <img width="500" alt="logo" src="assets/images/logo.svg" />
-            </div>
-        </div>
-        <div class="col-md-6 p-0">
-            <div class="login-form-container text-center py-5 px-4">
-                <h1>CORRESPONDENCE TRACKING SYSTEM</h1>
-
-                <!--login form-->
-                <form class="px-5" (ngSubmit)="onLogin($event)">
-                  <h2>Login</h2>
-                  <p>Fill out the fields below to login to CTS</p>
-                  <div class="form-group">
-                    <input type="text" name="username" placeholder="Username" [(ngModel)]="username" class="form-control">
-                  </div>
-                  <div class="form-group position-relative">
-                    <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Password"
-                           class="form-control">
-                    <button type="button" id="togglePassword" class="btn toggle-password">
-                      <i class="fa fa-eye"></i>
-                    </button>
-
-                  </div>
-                  <div class="d-flex justify-content-between mt-3">
-                    <button type="reset" class="btn btn-link p-0">Forgot password?</button>
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="rememberMe">
-                      <label class="form-check-label" for="rememberMe">
-                        Remember me
-                      </label>
-                    </div>
-                  </div>
-                  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
-                  <button type="submit" class="btn btn-primary mt-5 w-100" href="">Login</button>
-
-
-                </form>
-
-                <!--language-->
-                <div class="d-flex justify-content-center lang">
-                    <a class="active mx-4" href="#">English</a>
-                    <a class="mx-4" href="#">Arabic</a>
-                </div>
-            </div>
-        </div>
+  <div class="row h-100 m-0">
+    <div class="col-md-6 p-0">
+      <div class="logo-section layer">
+        <img width="500" alt="logo" src="assets/images/logo.svg" />
+      </div>
     </div>
+    <div class="col-md-6 p-0">
+      <div class="login-form-container text-center py-5 px-4">
+        <h1>CORRESPONDENCE TRACKING SYSTEM</h1>
+
+        <!--login form-->
+        <form class="px-5" (ngSubmit)="onLogin($event)">
+          <h2>Login</h2>
+          <p>Fill out the fields below to login to CTS</p>
+          <div class="form-group">
+            <input type="text" name="username" placeholder="Username" [(ngModel)]="username" class="form-control">
+          </div>
+          <div class="form-group position-relative">
+            <input id="password" [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="password"
+              placeholder="Password" class="form-control">
+            <button type="button" class="btn toggle-password" (click)="togglePassword()">
+              <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+            </button>
+            
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <button type="reset" class="btn btn-link p-0">Forgot password?</button>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">
+                Remember me
+              </label>
+            </div>
+          </div>
+          <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+          <button type="submit" class="btn btn-primary mt-5 w-100" href="">Login</button>
+
+
+        </form>
+
+        <!--language-->
+        <div class="d-flex justify-content-center lang">
+          <a class="active mx-4" href="#">English</a>
+          <a class="mx-4" href="#">Arabic</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

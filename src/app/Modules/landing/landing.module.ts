@@ -24,6 +24,8 @@ import { ToasterComponent } from '../shared/toaster/toaster.component';
 import { ConfirmationmodalComponent } from '../shared/confirmationmodal/confirmationmodal.component'
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { HighchartsChartModule } from 'highcharts-angular'; 
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     DelegationPageComponent,
@@ -51,7 +53,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     NgbModule,
     NgSelectModule,
     ToasterComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HighchartsChartModule,
+    MatDialogModule
   ],
 })
 export class LandingModule { }

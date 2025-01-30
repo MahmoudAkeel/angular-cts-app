@@ -11,51 +11,68 @@ import { GuidelinePageComponent } from './guideline-page/guideline-page.componen
 import { CompletedTransfersComponent } from './reports-page/completed-transfers/completed-transfers.component';
 import { InprogressTransfersComponent } from './reports-page/inprogress-transfers/inprogress-transfers.component';
 import { InProgressCorrespondencesComponent } from './reports-page/in-progress-correspondences/in-progress-correspondences.component';
+import { DashboardComponent } from './bam-page/dashboard/dashboard.component';
+import { SystemDashboardComponent } from './bam-page/system-dashboard/system-dashboard.component';
+import { MasterLayoutComponent } from '../shared/master-layout/master-layout.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent,
-  },
-  {
-    path: 'delegation',
-    component: DelegationPageComponent,
-  },
-  {
-    path: 'mail',
-    component: MailPageComponent,
-  },
-  {
-    path: 'reports',
-    component: ReportsPageComponent,
-  },
-  {
-    path: 'reports/inprogress-transfers',
-    component: InprogressTransfersComponent,
-  },
-  {
-    path: 'reports/completed-transfers',
-    component: CompletedTransfersComponent,
-  },
-  {
-    path: 'reports/inprogress-correspondences',
-    component: InProgressCorrespondencesComponent,
-  },
-  {
-    path: 'search',
-    component: SearchPageComponent,
-  },
-  {
-    path: 'MyMail',
-    component: MymailPageComponent,
-  },
-  {
-    path: 'Guidelines',
-    component: GuidelinePageComponent,
-  },
-  {
-    path: 'bam',
-    component: BamPageComponent,
+    component: MasterLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: LandingPageComponent,
+      },
+      {
+        path: 'delegation',
+        component: DelegationPageComponent,
+      },
+      {
+        path: 'mail',
+        component: MailPageComponent,
+      },
+      {
+        path: 'reports',
+        component: ReportsPageComponent,
+      },
+      {
+        path: 'reports/inprogress-transfers',
+        component: InprogressTransfersComponent,
+      },
+      {
+        path: 'reports/completed-transfers',
+        component: CompletedTransfersComponent,
+      },
+      {
+        path: 'reports/inprogress-correspondences',
+        component: InProgressCorrespondencesComponent,
+      },
+      {
+        path: 'search',
+        component: SearchPageComponent,
+      },
+      {
+        path: 'MyMail',
+        component: MymailPageComponent,
+      },
+      {
+        path: 'Guidelines',
+        component: GuidelinePageComponent,
+      },
+      {
+        path: 'bam',
+        component: BamPageComponent,
+      },
+      {
+        path: 'bam/dashboard',
+        component: DashboardComponent,
+      },
+      {
+        path: 'bam/system-dashboard',
+        component: SystemDashboardComponent,
+      }
+    ]
   }
 ];
 
