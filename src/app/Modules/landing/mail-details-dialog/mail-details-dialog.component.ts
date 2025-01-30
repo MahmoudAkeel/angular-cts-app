@@ -15,7 +15,8 @@ import { DataTablesModule } from 'angular-datatables';
 export class MailDetailsDialogComponent implements AfterViewChecked {
 
   @ViewChild('tabsContainer', { static: false }) tabsContainer!: ElementRef;
-  tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+  //tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+  tabs = ['Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
   isScrollable: boolean = false;
   activeTabIndex: number = 0;
 
@@ -24,11 +25,12 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
+    debugger;
     this.initDtOptions();
   }
   initDtOptions() {
     this.dtOptions = {
-      pageLength: 10,
+      pageLength: 5,
       search: false,
       order: [],
       pagingType: 'full_numbers',

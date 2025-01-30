@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SearchFilter } from '../../app/models/searchFilter.model';
@@ -9,7 +9,12 @@ import { SearchFilter } from '../../app/models/searchFilter.model';
 })
 export class SearchPageService {
   private searchApiUrl = 'https://cts-qatar.d-intalio.com/Search/List';
-  private saveDelegation = 'https://cts-qatar.d-intalio.com/CTS/Delegation/Save';
+  private getDocDetails = 'https://cts-qatar.d-intalio.com/Document/GetSearchDocument';
+  private notesURL = 'https://cts-qatar.d-intalio.com/Note/List';
+  private linkedDocURL = 'https://cts-qatar.d-intalio.com/LinkedDocument/List';
+  private nonArchiveURL = 'https://cts-qatar.d-intalio.com/NonArchivedAttachments/List'
+  private transHistoryURL = 'https://cts-qatar.d-intalio.com/Transfer/ListTransferHistory'
+  private activityLogURL = 'https://cts-qatar.d-intalio.com/ActivityLog/ListByDocumentId'
 
   constructor(private httpClient: HttpClient) { }
 
@@ -56,6 +61,142 @@ export class SearchPageService {
     return decodeURIComponent(escape(window.atob(str))); // Decode base64
   }
 
+  getActivityLog(accessToken: string, id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    const start = 0;
+    const length = 10;
+
+    const params = new URLSearchParams();
+    params.set('id', id);
+    params.set('start', start.toString());
+    params.set('length', length.toString());
+
+    const urlWithParams = `${this.activityLogURL}?${params.toString()}`;
+
+    return this.httpClient.get(urlWithParams, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching activity log', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getNonArchivedAttachment(accessToken: string, id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    const draw = 0;
+    const length = 10;
+
+    const params = new URLSearchParams();
+    params.set('documentId', id);
+    params.set('draw', draw.toString());
+    params.set('length', length.toString());
+
+    const urlWithParams = `${this.nonArchiveURL}?${params.toString()}`;
+
+    return this.httpClient.get(urlWithParams, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching activity log', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getLinkedCorrespondence(accessToken: string, id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    const params = new URLSearchParams();
+    params.set('documentId', id);
+
+    const urlWithParams = `${this.linkedDocURL}?${params.toString()}`;
+
+    return this.httpClient.get(urlWithParams, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching activity log', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getNotes(accessToken: string, id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    const draw = 0;
+    const length = 10;
+    const start = 0;
+
+    const params = new URLSearchParams();
+    params.set('draw', draw.toString());
+    params.set('start', start.toString());
+    params.set('length', length.toString());
+    params.set('documentId', id);
+
+    const urlWithParams = `${this.notesURL}?${params.toString()}`;
+
+    return this.httpClient.get(urlWithParams, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching activity log', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getDocAttributes(accessToken: string, id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+    
+    const params = new URLSearchParams();    
+    params.set('id', id);
+
+    const urlWithParams = `${this.getDocDetails}?${params.toString()}`;
+
+    return this.httpClient.get(urlWithParams, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching attributes', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getTransHistory(accessToken: string, id: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+    });
+
+    const formData = new FormData();
+    formData.append('draw', JSON.stringify(0));
+    formData.append('start', JSON.stringify(0));
+    formData.append('length', JSON.stringify(10));
+    formData.append('documentId', JSON.stringify(id));
+
+    return this.httpClient.post(this.transHistoryURL, formData, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching attributes', error.message);
+          throw error;
+        })
+      );
+  }
 
 
 }

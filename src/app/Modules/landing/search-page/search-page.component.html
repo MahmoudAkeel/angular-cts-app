@@ -144,16 +144,16 @@
           <th>Reference Number</th>
           <th>Subject</th>
           <th>Created Date</th>
-          <th>Sending Entity</th>
+          <!--<th>Sending Entity</th>
           <th>Receiving Entity</th>
           <th>Created ByUser</th>
           <th>Due Date</th>
           <th>Document Date</th>
           <th>Priority</th>
           <th>Importance</th>
-          <th>Privacy</th>
+          <th>Privacy</th>-->
           <th>Status</th>
-          <!--<th>Actions</th>-->
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -162,23 +162,23 @@
           <td>{{ row.referenceNumber }}</td>
           <td>{{ row.subject }}</td>
           <td>{{ row.createdDate }}</td>
-          <td>{{ row.sendingEntity }}</td>
+          <!--<td>{{ row.sendingEntity }}</td>
           <td>{{ row.receivingEntity }}</td>
           <td>{{ row.createdByUser }}</td>
           <td>{{ row.dueDate }}</td>
           <td>{{ row.documentDate }}</td>
           <td>{{ row.priorityText }}</td>
           <td>{{ row.importanceText }}</td>
-          <td>{{ row.privacyText }}</td>
+          <td>{{ row.privacyText }}</td>-->
           <td>{{ row.statusText }}</td>
-          <!--<td>
-          <button type="button" class="btn" (click)="onEdit(row)">
-            <i class="fa fa-edit"></i>
-          </button>
-          <button type="button" class="btn" (click)="onDelete(row)">
-            <i class="fa fa-times-circle"></i>
-          </button>
-        </td>-->
+          <td>
+            <button type="button" class="btn" (click)="showDetails(row)">
+              <i class="fa fa-edit"></i>
+            </button>
+            <!--<button type="button" class="btn" (click)="onDelete(row)">
+              <i class="fa fa-times-circle"></i>
+            </button>-->
+          </td>
         </tr>
       </tbody>
     </table>
@@ -188,4 +188,5 @@
     </div>
     <app-toaster></app-toaster>
   </div>
+
 </div>
