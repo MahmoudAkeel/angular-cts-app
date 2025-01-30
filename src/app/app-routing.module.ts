@@ -13,7 +13,6 @@ const routes: Routes = [
   },
   {
     path: 'landing',
-    component: MasterLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       {

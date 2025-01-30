@@ -14,13 +14,13 @@ export class BamPageComponent {
       backgroundColor: '#DEF5FF',
       imgSrc: 'assets/images/icons/BAM.png',
       title: 'Dashboard',
-      link: '/landing/bam/dashboard',
+      link: '/bam/dashboard',
     },
     {
       backgroundColor: '#FEEAF3',
       imgSrc: 'assets/images/icons/BAM.png',
       title: 'System Dashboard',
-      link: '/landing/bam/system-dashboard',
+      link: '/bam/system-dashboard',
     }
 
   ];

@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements OnInit {
   
   userInfo = {name:"Fatima AliAhmad",Job:"Frontend Developer",ID:1234,image:null}
+  
+  showMenu: boolean = true;
+  
   MainnavItems = [
     { link: 'MyMail', icon: 'assets/images/icons/email.svg', title: 'My Mail' },
     { link: 'Guidelines', icon: 'assets/images/icons/Union.svg', title: 'Mail for Guidelines' },
@@ -32,6 +35,10 @@ export class HeaderComponent implements OnInit {
     // Subscribe to the currentUser observable
     this.authService.CurrentUser.subscribe(user => {
       this.userName = user;
+    });
+
+    this.route.events.subscribe(() => {
+      this.showMenu = this.route.url !== '/landing';
     });
   }
   onLogout(event: Event) {
