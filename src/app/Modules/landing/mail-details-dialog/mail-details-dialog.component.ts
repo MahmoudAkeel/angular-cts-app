@@ -120,7 +120,7 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
       ordering: false
     };
   }
-  // Function to transform the attachment structure into the required tree format
+
   private transformAttachmentsToTree(mailAttachments: any[]): TreeNode[] {
     return mailAttachments.map(attachment => this.createTreeNode(attachment));
   }

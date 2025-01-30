@@ -244,7 +244,6 @@ export class SearchPageComponent {
       }
     });
 
-    debugger;
     this.searchService.searchInbox(this.accessToken!, formattedSearchModel).subscribe((result: SearchResponse) => {
       this.response = result;
       this.response.data.forEach(item => {
@@ -395,7 +394,6 @@ export class SearchPageComponent {
       this.getAttachments(row.id)
     ]);
 
-    // Now open the dialog once all the data has been retrieved
     this.dialog.open(MailDetailsDialogComponent, {
       disableClose: true,
       width: '90%',
