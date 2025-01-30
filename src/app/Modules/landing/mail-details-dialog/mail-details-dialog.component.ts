@@ -1,13 +1,28 @@
-import { Component, Inject, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, Inject, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule } from 'angular-datatables';
 
+import { MatTreeModule } from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+
+interface TreeNode {
+  name: string;
+  children?: TreeNode[];
+}
+
+interface FlatTreeNode {
+  expandable: boolean;
+  name: string;
+  level: number;
+}
+
 @Component({
   selector: 'app-mail-details-dialog',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, NgbDatepickerModule, DataTablesModule],
+  imports: [CommonModule, MatDialogModule, NgbDatepickerModule, DataTablesModule, MatTreeModule],
   templateUrl: './mail-details-dialog.component.html',
   styleUrls: ['./mail-details-dialog.component.scss']
 })
@@ -15,22 +30,75 @@ import { DataTablesModule } from 'angular-datatables';
 export class MailDetailsDialogComponent implements AfterViewChecked {
 
   @ViewChild('tabsContainer', { static: false }) tabsContainer!: ElementRef;
-  //tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
-  tabs = ['Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+//  tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+  tabs = [ 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
   isScrollable: boolean = false;
   activeTabIndex: number = 0;
+  selectedNode: any = null;
 
   dtOptions: DataTables.Settings = {};
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef) { }
+  treeControl: FlatTreeControl<FlatTreeNode>;
+  treeFlattener: MatTreeFlattener<TreeNode, FlatTreeNode>;
+  dataSource: MatTreeFlatDataSource<TreeNode, FlatTreeNode>;
+
+  TREE_DATA: TreeNode[] = [
+    {
+      name: 'Documents',
+      children: [
+        {
+          name: 'Original document',
+          children: [
+            { name: '_نموذج مراسلة خارجية2.pdf' }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'Documents',
+      children: [
+        {
+          name: 'Original document',
+          children: [
+            { name: '_نموذج مراسلة خارجية2.pdf' },
+            { name: '_نموذج مراسلة خارجية2.pdf' },
+            { name: '_نموذج مراسلة خارجية2.pdf' }
+          ]
+        }
+      ]
+    }
+  ];
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef) {
+    this.treeFlattener = new MatTreeFlattener(
+      this._transformer,
+      (node: FlatTreeNode) => node.level,
+      (node: FlatTreeNode) => node.expandable,
+      (node: TreeNode) => node.children
+    );
+
+    this.treeControl = new FlatTreeControl<FlatTreeNode>(
+      (node: FlatTreeNode) => node.level,
+      (node: FlatTreeNode) => node.expandable
+    );
+
+
+    this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    this.dataSource.data = this.TREE_DATA;
+  }
 
   ngOnInit() {
-    debugger;
     this.initDtOptions();
+
+    // Transform the data passed to the dialog into tree data format
+    if (this.data && this.data.mailAttachments) {
+      this.TREE_DATA = this.transformAttachmentsToTree(this.data.mailAttachments);
+      this.dataSource.data = this.TREE_DATA;
+    }
   }
   initDtOptions() {
     this.dtOptions = {
-      pageLength: 5,
+      pageLength: 10,
       search: false,
       order: [],
       pagingType: 'full_numbers',
@@ -52,7 +120,20 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
       ordering: false
     };
   }
+  // Function to transform the attachment structure into the required tree format
+  private transformAttachmentsToTree(mailAttachments: any[]): TreeNode[] {
+    return mailAttachments.map(attachment => this.createTreeNode(attachment));
+  }
 
+  private createTreeNode(attachment: any): TreeNode {
+    const node: TreeNode = { name: attachment.text };  // Using 'text' as the name for the node
+
+    if (attachment.children && attachment.children.length > 0) {
+      node.children = attachment.children.map((child: any) => this.createTreeNode(child));
+    }
+
+    return node;
+  }
   ngAfterViewChecked() {
     if (this.tabsContainer) {
       const newScrollState = this.checkScroll();
@@ -85,6 +166,22 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
   }
 
 
+  private _transformer = (node: TreeNode, level: number): FlatTreeNode => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      level: level
+    };
+  };
+
+
+  hasChild = (_: number, node: FlatTreeNode) => node.expandable;
+
+
+  selectNode(node: any, event: Event) {
+    event.preventDefault();
+    this.selectedNode = node;
+  }
 
   Items = [
     {

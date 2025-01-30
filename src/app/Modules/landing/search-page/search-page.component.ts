@@ -14,6 +14,7 @@ import { DelegationToUsers } from '../../../models/delegationTo.model';
 import { ActivityLogResponse } from '../../../models/activity.model';
 import { DocAttributesApiResponse } from '../../../models/searchDocAttributes.model';
 import { SearchResponse } from '../../../models/searchresponse.model';
+import { AttachmentsApiResponce } from '../../../models/attachments.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MailDetailsDialogComponent } from '../mail-details-dialog/mail-details-dialog.component';
 
@@ -48,6 +49,7 @@ export class SearchPageComponent {
   transHistory: any[] = [];
   activityLogs: ActivityLogResponse[] = [];
   attributes: DocAttributesApiResponse | null = null;
+  attachments: AttachmentsApiResponce[] | null = [];
 
   loading: boolean = true; // Loading state
   constructor(
@@ -190,7 +192,7 @@ export class SearchPageComponent {
     return { year: +year, month: +month, day: +day };
   }
 
- 
+
 
   initDtOptions(): void {
     this.dtOptions = {
@@ -222,12 +224,12 @@ export class SearchPageComponent {
 
   onSearch() {
     console.log(this.searchModel);
-    const formattedSearchModel = { ...this.searchModel }; 
+    const formattedSearchModel = { ...this.searchModel };
 
     // Change IDs sent by zero to empty & format dates
     (Object.keys(formattedSearchModel) as (keyof SearchFilter)[]).forEach((key) => {
       if (key !== "delegationId" && typeof formattedSearchModel[key] === "string" && formattedSearchModel[key] === "0") {
-        (formattedSearchModel[key] as string) = "";  
+        (formattedSearchModel[key] as string) = "";
       }
 
       // Check if the key corresponds to one of the date fields that need to be formatted
@@ -254,7 +256,7 @@ export class SearchPageComponent {
       },
         (error: any) => {
           console.error('Error getting search result:', error);
-          this.toaster.showToaster(error?.message || 'Something went wrong');
+          this.toaster.showToaster(error ?.message || 'Something went wrong');
         });
     });
 
@@ -365,16 +367,32 @@ export class SearchPageComponent {
       );
     });
   }
+
+  getAttachments(docID: string): Promise<AttachmentsApiResponce> {
+    return new Promise((resolve, reject) => {
+      this.searchService.getAttachments(this.accessToken!, docID).subscribe(
+        (response: any) => {
+          this.attachments = response || [];
+          resolve(response);
+        },
+        (error: any) => {
+          console.error(error);
+          reject(error);
+        }
+      );
+    });
+  }
+
   async showDetails(row: any) {
 
-    // Wait for all the API calls to resolve before continuing
-    const [attributes, nonArchAttachments, linkedDocs, activityLogs, notes, transHistory] = await Promise.all([
+    const [attributes, nonArchAttachments, linkedDocs, activityLogs, notes, transHistory, attachments] = await Promise.all([
       this.getAttributes(row.id),
       this.getNonArchAttachments(row.id),
       this.getLinkedDocuments(row.id),
       this.getActivityLogs(row.id),
       this.getNotes(row.id),
-      this.getHistory(row.id)
+      this.getHistory(row.id),
+      this.getAttachments(row.id)
     ]);
 
     // Now open the dialog once all the data has been retrieved
@@ -382,7 +400,10 @@ export class SearchPageComponent {
       disableClose: true,
       width: '90%',
       height: '90%',
-      data: { rowData: row, notesData: notes, linkedDoc: linkedDocs, archAttach: nonArchAttachments, logs: activityLogs, history: transHistory }
+      data: {
+        rowData: row, notesData: notes, linkedDoc: linkedDocs, archAttach: nonArchAttachments,
+        logs: activityLogs, history: transHistory, mailAttachments: attachments
+      }
     });
 
   } catch(error: any) {

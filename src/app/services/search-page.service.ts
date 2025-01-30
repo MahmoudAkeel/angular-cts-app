@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SearchFilter } from '../../app/models/searchFilter.model';
+import { AttachmentsApiResponce } from '../models/attachments.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class SearchPageService {
   private nonArchiveURL = 'https://cts-qatar.d-intalio.com/NonArchivedAttachments/List'
   private transHistoryURL = 'https://cts-qatar.d-intalio.com/Transfer/ListTransferHistory'
   private activityLogURL = 'https://cts-qatar.d-intalio.com/ActivityLog/ListByDocumentId'
+  private attachmentsURL = 'https://cts-qatar.d-intalio.com/Attachment/List'
 
   constructor(private httpClient: HttpClient) { }
 
@@ -198,6 +200,22 @@ export class SearchPageService {
       );
   }
 
+  getAttachments(accessToken: string, id: string): Observable<AttachmentsApiResponce[]> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json', 
+    });
 
+    const params = new HttpParams().set('documentId', id); 
+
+    return this.httpClient.get<AttachmentsApiResponce[]>(this.attachmentsURL , { headers, params })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching attachments:', error.message);
+          return [];
+        })
+      );
+  }
 }
+
 
