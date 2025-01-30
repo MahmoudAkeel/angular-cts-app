@@ -1,113 +1,191 @@
-        <!--title-->
-        <div class="d-flex justify-content-between mb-3">
-            <h1 class="page-title">Search</h1>
-        </div>
+<div class="container-fluid">
 
+  <!--title-->
+  <div class="d-flex justify-content-between mb-3">
+    <h1 class="page-title">Search</h1>
+  </div>
 
-        <!--form-->
-            <div class="row">
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <!--date-->
-                    <div class="form-group">
-                        <label for="datepicker" class="form-label">Register date</label>
-                        <input
-                        class="form-control date-picker"
-                        placeholder="yyyy-mm-dd"
-                        name="dp"
-                        [(ngModel)]="regmodel"
-                        ngbDatepicker
-                        #regDate="ngbDatepicker"
-                        (click)="regDate.toggle()"
-                      />
-                    </div>
+  <!--form-->
+  <div class="row">
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <label for="sendingEntity" class="form-label">Sending entity</label>
+        <select class="form-select select2" name="sendingEntity" id="ddlSendEntity" [(ngModel)]="searchModel.documentSender">
+          <option *ngFor="let sen of entities" [value]="sen.id">
+            {{ sen.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <label for="recEntity" class="form-label">Receiving entity</label>
+        <select class="form-select select2" name="recEntity" id="ddlRecEntity" [(ngModel)]="searchModel.documentReceiver">
+          <option *ngFor="let rec of entities" [value]="rec.id">
+            {{ rec.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <label for="ddlFromUsers" class="form-label">Transfer, from user</label>
+        <select id="ddlFromUsers" name="fromUser" class="form-select select2" [(ngModel)]="searchModel.fromUser">
+          <option *ngFor="let user of searchUsers" [value]="user.id">
+            {{ user.fullName }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <label for="ddlToUsers" class="form-label">Transfer, to user</label>
+        <select id="ddlToUsers" name="toUsers" class="form-select select2" [(ngModel)]="searchModel.toUser">
+          <option *ngFor="let user of searchUsers" [value]="user.id">
+            {{ user.fullName }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <label for="ddlTransEntity" class="form-label">Transfer, from structure</label>
+        <select id="ddlTransEntity" name="transFrom" class="form-select select2" [(ngModel)]="searchModel.fromStructure">
+          <option *ngFor="let rec of entities" [value]="rec.id">
+            {{ rec.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <div class="form-group">
+        <label for="ddlTransFromEntity" class="form-label">Transfer, to structure</label>
+        <select id="ddlTransFromEntity" name="transTo" class="form-select select2" [(ngModel)]="searchModel.toStructure">
+          <option *ngFor="let rec of entities" [value]="rec.id">
+            {{ rec.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <!--date-->
+      <div class="form-group">
+        <label for="datepicker" class="form-label">Transfer, from date</label>
+        <input class="form-control date-picker"
+               placeholder="yyyy-mm-dd"
+               name="dp1"
+               [(ngModel)]="searchModel.fromTransferDate"
+               ngbDatepicker
+               #d1="ngbDatepicker"
+               #regDate="ngbDatepicker"
+               (click)="d1.toggle()" />
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <!--date-->
+      <div class="form-group">
+        <label for="datepicker" class="form-label">Transfer, to date</label>
+        <input class="form-control date-picker"
+               placeholder="yyyy-mm-dd"
+               name="dp2"
+               [(ngModel)]="searchModel.toTransferDate"
+               ngbDatepicker
+               #d2="ngbDatepicker"
+               #regDate="ngbDatepicker"
+               (click)="d2.toggle()" />
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <!--text-->
+      <div class="form-group">
+        <label for="txtKeyword" class="form-label">Keywords</label>
+        <input type="text" id="txtKeyword" name="keyword" class="form-control" [(ngModel)]="searchModel.keyword">
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3">
+      <!--date-->
+      <div class="form-group">
+        <label for="datepicker" class="form-label">Document Date</label>
+        <input class="form-control date-picker"
+               placeholder="yyyy-mm-dd"
+               name="dp3"
+               [(ngModel)]="searchModel.DocumentDate"
+               #d3="ngbDatepicker"
+               ngbDatepicker
+               #regDate="ngbDatepicker"
+               (click)="d3.toggle()" />
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngIf="delegationUsers.length > 1">
+      <div class="form-group">
+        <label for="select2Example" class="form-label">Search in inbox of</label>
+        <select class="form-select select2" [(ngModel)]="searchModel.delegationId">
+          <option *ngFor="let user of delegationUsers" [value]="user.id">
+            {{ user.fromUser }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <!--text-->
-                    <div class="form-group">
-                        <label for="datepicker" class="form-label">Reference number</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <!--select2-->
-                    <div class="form-group">
-                        <label for="select2Example" class="form-label">Category</label>
-                        <select class="form-select select2">
-                            <option *ngFor="let cat of Category" [value]="cat.id">
-                                {{ cat.name }}
-                              </option>
-                        </select>
-                    </div>
-                </div>
+  <!--actions-->
+  <div class="d-flex justify-content-end gap-3 mt-2">
+    <button class="btn btn-secondary btn-lg" (click)="clearForm()">Clear</button>
+    <button class="btn btn-primary btn-lg" (click)="onSearch()"><i class="fa fa-search"></i> Search</button>
+  </div>
 
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="form-group">
-                        <label for="select2Example" class="form-label">Sending entity</label>
-                        <select class="form-select select2">
-                            <option *ngFor="let sen of Sending" [value]="sen.id">
-                                {{ sen.name }}
-                              </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="form-group">
-                        <label for="datepicker" class="form-label">Tags</label>
-                        <input type="text" class="form-control">
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="form-group">
-                        <label for="datepicker" class="form-label">From</label>
-                        <input
-                        class="form-control date-picker"
-                        placeholder="yyyy-mm-dd"
-                        name="dp"
-                        [(ngModel)]="fromModal"
-                        ngbDatepicker
-                        #d1="ngbDatepicker"
-                        (click)="d1.toggle()"
-                      />
-                    </div>
-                </div>
+  <p *ngIf="response&& response.recordsTotal">Total records: {{ response.recordsTotal }}</p>
 
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="form-group">
-                        <label for="datepicker" class="form-label">To</label>
-                        <input
-                        class="form-control date-picker"
-                        placeholder="yyyy-mm-dd"
-                        name="dp"
-                        [(ngModel)]="tomodel"
-                        ngbDatepicker
-                        #d2="ngbDatepicker"
-                        (click)="d2.toggle()"
-                      />
-                  </div>
-                    </div>
-             
-
-                <div class="col-sm-6 col-md-4 col-lg-3">
-                    <div class="form-group">
-                        <label for="select2Example" class="form-label">Receiving entity</label>
-                        <select class="form-select select2">
-                            <option *ngFor="let rec of Receiving" [value]="rec.id">
-                                {{ rec.name }}
-                              </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="datepicker" class="form-label">Subject</label>
-                        <textarea class="form-control"></textarea>
-                    </div>
-                </div>
-
-                </div>
-            <!--actions-->
-            <div class="d-flex justify-content-end gap-3 mt-2">
-                <button class="btn btn-secondary btn-lg">Clear</button>
-                <button class="btn btn-primary btn-lg"><i class="fa fa-search"></i> Search</button>
-            </div>
+  <div class="shadow table-container overflow-x-auto">
+    <table class="table" *ngIf="response && response.data.length > 0" datatable [dtOptions]="dtOptions">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Reference Number</th>
+          <th>Subject</th>
+          <th>Created Date</th>
+          <th>Sending Entity</th>
+          <th>Receiving Entity</th>
+          <th>Created ByUser</th>
+          <th>Due Date</th>
+          <th>Document Date</th>
+          <th>Priority</th>
+          <th>Importance</th>
+          <th>Privacy</th>
+          <th>Status</th>
+          <!--<th>Actions</th>-->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of response.data">
+          <td>{{ row.categoryText }}</td>
+          <td>{{ row.referenceNumber }}</td>
+          <td>{{ row.subject }}</td>
+          <td>{{ row.createdDate }}</td>
+          <td>{{ row.sendingEntity }}</td>
+          <td>{{ row.receivingEntity }}</td>
+          <td>{{ row.createdByUser }}</td>
+          <td>{{ row.dueDate }}</td>
+          <td>{{ row.documentDate }}</td>
+          <td>{{ row.priorityText }}</td>
+          <td>{{ row.importanceText }}</td>
+          <td>{{ row.privacyText }}</td>
+          <td>{{ row.statusText }}</td>
+          <!--<td>
+          <button type="button" class="btn" (click)="onEdit(row)">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button type="button" class="btn" (click)="onDelete(row)">
+            <i class="fa fa-times-circle"></i>
+          </button>
+        </td>-->
+        </tr>
+      </tbody>
+    </table>
+    <!-- Message for No Data Found -->
+    <div *ngIf="response && response.data.length === 0" class="text-center mt-3">
+      <p>No data found</p>
+    </div>
+    <app-toaster></app-toaster>
+  </div>
+</div>

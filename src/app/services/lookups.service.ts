@@ -12,6 +12,12 @@ export class LookupsService {
   private listUsersUrl = 'https://iam-qatar.d-intalio.com/api/SearchUsersByStructureIds';
   private listPrivacies = 'https://cts-qatar.d-intalio.com/Privacy/ListPrivacies';
   private listCategories = 'https://cts-qatar.d-intalio.com/Category/ListCategories';
+  private listEntities = 'https://iam-qatar.d-intalio.com/api/SearchStructuresWithSearchAttributes';
+  private listSearchUsers = 'https://iam-qatar.d-intalio.com/api/SearchUsers';
+  private listDelegateToUsers = 'https://cts-qatar.d-intalio.com/CTS/Delegation/ListDelegationToUser';
+  private listImportance = 'https://cts-qatar.d-intalio.com/Importance/ListImportances';
+  private listStatus = 'https://cts-qatar.d-intalio.com/Status/ListStatuses';
+  private listPriorities = 'https://cts-qatar.d-intalio.com/Priority/ListPriorities';
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +34,6 @@ export class LookupsService {
   getPriorityOptions(): Observable<Priority[]> {
     return this.http.get<Priority[]>('https://cts-qatar.d-intalio.com/Priority/ListPriorities');
   }
-
 
   getUsers(accessToken: string): Observable<any> {
 
@@ -88,5 +93,102 @@ export class LookupsService {
       );
   }
 
+  getEntities(accessToken: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`
+    });
+
+    const formData = new FormData();
+    formData.append('attributes[]', JSON.stringify("NameAr"));
+    formData.append('attributes[]', JSON.stringify("NameFr"));
+
+    return this.http.post(this.listEntities, formData, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while entities data', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getSearchUsers(accessToken: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    let params = new HttpParams();
+
+    params = params.set('text', '');
+    params = params.set('language', 'en');
+
+    return this.http.get(this.listSearchUsers, { headers, params })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching search users data', error.message);
+          throw error;
+        })
+      );
+  }
+
+
+  getDelegationToUsers(accessToken: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get(this.listDelegateToUsers, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching delegation To users data', error.message);
+          throw error;
+        })
+      );
+  }
+  getImportance(accessToken: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get(this.listImportance, { headers })
+      .pipe(
+        catchError((error) => {
+        console.error('Error while fetching Importance data', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getStatus(accessToken: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get(this.listStatus, { headers })
+      .pipe(
+        catchError((error) => {
+        console.error('Error while fetching Status data', error.message);
+          throw error;
+        })
+      );
+  }
+
+  getPriorities(accessToken: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get(this.listPriorities, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error while fetching priorities data', error.message);
+          throw error;
+        })
+      );
+  }
 
 }
