@@ -211,7 +211,7 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of data.linkedDoc.data">
-                    <td>{{ item.categoryId }}</td>
+                    <td>{{ item.category||'' }}</td>
                     <td>{{ item.linkedDocumentReferenceNumber }}</td>
                     <td>{{ item.linkedBy }}</td>
                     <td>{{ item.createdDate }}</td>
