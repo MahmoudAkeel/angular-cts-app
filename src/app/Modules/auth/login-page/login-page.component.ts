@@ -13,6 +13,7 @@ export class LoginPageComponent {
   username = '';
   password='';
   errorMsg = '';
+  showPassword = false;
 
   constructor(private authService: AuthService, private route:Router) { }
 
@@ -36,5 +37,10 @@ export class LoginPageComponent {
       });
 
 
+  }
+
+  
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }
