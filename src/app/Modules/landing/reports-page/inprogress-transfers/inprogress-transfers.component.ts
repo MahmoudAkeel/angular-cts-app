@@ -1,17 +1,15 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { InprogressReport } from '../../../../models/inprogress-report.model';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { ReportsService } from '../../../../services/reports.service';
-import { forkJoin } from 'rxjs';
-import { UsersService } from '../../../../services/users.service';
-import { User } from '../../../../models/user.model';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { StructuresService } from '../../../../services/structures.service';
-import { Structure } from '../../../../models/structure.model';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
+import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { ApiResponse } from '../../../../models/api-response.model';
+import { InprogressReport } from '../../../../models/inprogress-report.model';
+import { Structure } from '../../../../models/structure.model';
+import { User } from '../../../../models/user.model';
+import { ReportsService } from '../../../../services/reports.service';
+import { StructuresService } from '../../../../services/structures.service';
+import { UsersService } from '../../../../services/users.service';
 
 
 @Component({
@@ -31,6 +29,7 @@ export class InprogressTransfersComponent implements OnInit, OnDestroy {
     structureError: string = '';
 
     fromDate: NgbDateStruct | undefined;
+    //formatDate?: (date: NgbDateStruct | undefined) => string; // Use '?' to make it optional
     toDate: NgbDateStruct | undefined;
 
     selectedUsers: number[] = [];
@@ -90,18 +89,18 @@ export class InprogressTransfersComponent implements OnInit, OnDestroy {
         this.initDtOptions();
         this.loadStructures();
         this.loadReports();
-
-        const today = new Date();
-        this.fromDate = {
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            day: today.getDate()
-        };
-        this.toDate = {
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            day: today.getDate()
-        };
+        this.loadUsers();
+        // const today = new Date();
+        // this.fromDate = {
+        //     year: today.getFullYear(),
+        //     month: today.getMonth() + 1,
+        //     day: today.getDate()
+        // };
+        // this.toDate = {
+        //     year: today.getFullYear(),
+        //     month: today.getMonth() + 1,
+        //     day: today.getDate()
+        // };
     }
 
     initDtOptions() {
@@ -202,6 +201,7 @@ export class InprogressTransfersComponent implements OnInit, OnDestroy {
     }
 
     loadUsers(searchText: string = '') {
+        debugger
         this.usersService.searchUsers(searchText).subscribe({
             next: (users) => {
                 this.users = users;
@@ -252,18 +252,20 @@ export class InprogressTransfersComponent implements OnInit, OnDestroy {
         this.structureError = '';
         this.userError = '';
         this.isOverdue = false;
-
+        this.fromDate = undefined;
+        this.toDate = undefined;
         const today = new Date();
-        this.fromDate = {
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            day: today.getDate()
-        };
-        this.toDate = {
-            year: today.getFullYear(),
-            month: today.getMonth() + 1,
-            day: today.getDate()
-        };
+       
+        // this.fromDate = {
+        //     year: today.getFullYear(),
+        //     month: today.getMonth() + 1,
+        //     day: today.getDate()
+        // };
+        // this.toDate = {
+        //     year: today.getFullYear(),
+        //     month: today.getMonth() + 1,
+        //     day: today.getDate()
+        // };
 
         this.currentPage = 1;
         this.loadReports();
@@ -303,12 +305,14 @@ export class InprogressTransfersComponent implements OnInit, OnDestroy {
     }
 
     onUserSearch(event: { term: string, items: User[] }) {
+        debugger
         this.userSearchText = event.term;
         this.isLoadingUsers = true;
         this.userSearchSubject.next(this.userSearchText);
     }
 
     getUserDisplayName(user: User): string {
+        debugger
         return user.fullName || `${user.firstName} ${user.lastName}`.trim();
     }
 

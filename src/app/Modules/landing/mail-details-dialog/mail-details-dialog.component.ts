@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, Inject, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,8 @@ interface FlatTreeNode {
 export class MailDetailsDialogComponent implements AfterViewChecked {
 
   @ViewChild('tabsContainer', { static: false }) tabsContainer!: ElementRef;
-  tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+//  tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+  tabs = [ 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
   isScrollable: boolean = false;
   activeTabIndex: number = 0;
   selectedNode: any = null;
@@ -81,12 +82,19 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
       (node: FlatTreeNode) => node.expandable
     );
 
+
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = this.TREE_DATA;
   }
 
   ngOnInit() {
     this.initDtOptions();
+
+    // Transform the data passed to the dialog into tree data format
+    if (this.data && this.data.mailAttachments) {
+      this.TREE_DATA = this.transformAttachmentsToTree(this.data.mailAttachments);
+      this.dataSource.data = this.TREE_DATA;
+    }
   }
   initDtOptions() {
     this.dtOptions = {
@@ -113,6 +121,19 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
     };
   }
 
+  private transformAttachmentsToTree(mailAttachments: any[]): TreeNode[] {
+    return mailAttachments.map(attachment => this.createTreeNode(attachment));
+  }
+
+  private createTreeNode(attachment: any): TreeNode {
+    const node: TreeNode = { name: attachment.text };  // Using 'text' as the name for the node
+
+    if (attachment.children && attachment.children.length > 0) {
+      node.children = attachment.children.map((child: any) => this.createTreeNode(child));
+    }
+
+    return node;
+  }
   ngAfterViewChecked() {
     if (this.tabsContainer) {
       const newScrollState = this.checkScroll();
@@ -158,8 +179,8 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
 
 
   selectNode(node: any, event: Event) {
-      event.preventDefault();
-      this.selectedNode = node;
+    event.preventDefault();
+    this.selectedNode = node;
   }
 
   Items = [

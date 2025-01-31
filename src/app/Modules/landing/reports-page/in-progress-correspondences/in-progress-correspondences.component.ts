@@ -1,20 +1,18 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { InprogressReport } from '../../../../models/inprogress-report.model';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { ReportsService } from '../../../../services/reports.service';
-import { forkJoin } from 'rxjs';
-import { UsersService } from '../../../../services/users.service';
-import { User } from '../../../../models/user.model';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { StructuresService } from '../../../../services/structures.service';
-import { Structure } from '../../../../models/structure.model';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ApiResponse } from '../../../../models/api-response.model';
-import { LookupsService } from '../../../../services/lookups.service';
 import { InprogressCorrespondence } from '../../../../models/inprogress-correspondence.model';
 import { Priority } from '../../../../models/priority.model';
+import { Structure } from '../../../../models/structure.model';
+import { User } from '../../../../models/user.model';
+import { LookupsService } from '../../../../services/lookups.service';
+import { ReportsService } from '../../../../services/reports.service';
+import { StructuresService } from '../../../../services/structures.service';
+import { UsersService } from '../../../../services/users.service';
 @Component({
   selector: 'app-in-progress-correspondences',
   templateUrl: './in-progress-correspondences.component.html',
@@ -32,7 +30,8 @@ export class InProgressCorrespondencesComponent implements OnInit, OnDestroy {
   structures: Structure[] = [];
   structureError: string = '';
 
-  fromDate: NgbDateStruct | undefined;
+  fromDate: any = null; // or set to a specific date like { year: 2023, month: 1, day: 1 }
+  //fromDate: NgbDateStruct | undefined;
   toDate: NgbDateStruct | undefined;
 
   selectedUsers: number[] = [];
@@ -99,6 +98,7 @@ export class InProgressCorrespondencesComponent implements OnInit, OnDestroy {
     this.loadReports();
     this.loadPrivacyOptions();
     this.loadPriorityOptions();
+    this.loadUsers();
   }
 
   initDtOptions() {
@@ -270,6 +270,7 @@ export class InProgressCorrespondencesComponent implements OnInit, OnDestroy {
   }
 
   clear() {
+    debugger
     this.selectedStructures = [];
     this.selectedUsers = [];
     this.selectedPrivacyId = null;

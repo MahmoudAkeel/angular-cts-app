@@ -131,7 +131,6 @@ export class LookupsService {
       );
   }
 
-
   getDelegationToUsers(accessToken: string): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${accessToken}`,
@@ -146,6 +145,7 @@ export class LookupsService {
         })
       );
   }
+
   getImportance(accessToken: string): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${accessToken}`,

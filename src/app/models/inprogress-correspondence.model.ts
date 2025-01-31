@@ -11,6 +11,7 @@ export interface Transfer {
 export interface InprogressCorrespondence {
     id: number;
     categoryId: number;
+    categoryName: string;
     referenceNumber: string | null;
     subject: string;
     isOverDue: boolean;

@@ -14,14 +14,12 @@
         </div>
     </div>
 
+    <button mat-button (click)="showMailDetails()">just for testing remove this btn</button>
     <!-- Tabs -->
     <div class="nav nav-tabs mt-3" role="tablist">
-        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-new" type="button" role="tab"
-            aria-selected="true"><i class="fa fa-plus-circle"></i>New</button>
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-sent" type="button" role="tab"
-            aria-selected="false"><i class="fa fa-paper-plane"></i>Sent</button>
-        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-completed" type="button" role="tab"
-            aria-selected="false"><i class="fa fa-check-circle"></i>Completed</button>
+        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-new" type="button" role="tab" aria-selected="true"><i class="fa fa-plus-circle"></i>New</button>
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-sent" type="button" role="tab" aria-selected="false"><i class="fa fa-paper-plane"></i>Sent</button>
+        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#nav-completed" type="button" role="tab" aria-selected="false"><i class="fa fa-check-circle"></i>Completed</button>
     </div>
 
     <!-- Tab Contents -->
@@ -32,8 +30,7 @@
                 No data available in the table.
             </div>
 
-            <table class="table table-text light-text" datatable [dtOptions]="dtOptions"
-                *ngIf="!loading && newItems.length > 0">
+            <table class="table table-text light-text" datatable [dtOptions]="dtOptions" *ngIf="!loading && newItems.length > 0">
                 <thead>
                     <tr>
                         <th>Subject</th>
@@ -56,8 +53,9 @@
                         </td>
                         <td>
                             <span>
-                                <img class="primary-filter" alt=""
-                                    [src]="item.isRead ? 'assets/images/icons/email.svg' : 'assets/images/icons/email-red.svg'" />
+                                <img 
+                                    alt="" 
+                                    [src]="item.isRead ? 'assets/images/icons/green-email.svg' : 'assets/images/icons/red-email.svg'" />
                             </span>
                             <span *ngIf="item.isOverDue">
                                 <img alt="" src="assets/images/icons/clock.svg" />
@@ -95,8 +93,9 @@
                         </td>
                         <td>
                             <span>
-                                <img class="primary-filter" alt=""
-                                    [src]="item.isRead ? 'assets/images/icons/email.svg' : 'assets/images/icons/email-red.svg'" />
+                                <img 
+                                    alt="" 
+                                    [src]="item.isRead ? 'assets/images/icons/green-email.svg' : 'assets/images/icons/red-email.svg'" />
                             </span>
                             <span *ngIf="item.isOverDue">
                                 <img alt="" src="assets/images/icons/clock.svg" />
@@ -111,8 +110,7 @@
             <div *ngIf="!loading && completedItems.length === 0" class="alert alert-warning" role="alert">
                 No data available in the table.
             </div>
-            <table class="table light-text" datatable [dtOptions]="dtOptions"
-                *ngIf="!loading && completedItems.length > 0">
+            <table class="table light-text" datatable [dtOptions]="dtOptions" *ngIf="!loading && completedItems.length > 0">
                 <thead>
                     <tr>
                         <th>Subject</th>
@@ -135,8 +133,9 @@
                         </td>
                         <td>
                             <span>
-                                <img class="primary-filter" alt=""
-                                    [src]="item.isRead ? 'assets/images/icons/email.svg' : 'assets/images/icons/email-red.svg'" />
+                                <img 
+                                    alt="" 
+                                    [src]="item.isRead ? 'assets/images/icons/green-email.svg' : 'assets/images/icons/red-email.svg'" />
                             </span>
                             <span *ngIf="item.isOverDue">
                                 <img alt="" src="assets/images/icons/clock.svg" />

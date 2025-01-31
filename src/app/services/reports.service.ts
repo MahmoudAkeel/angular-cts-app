@@ -1,9 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { ApiResponse } from '../models/api-response.model';
-import { InprogressReport } from '../models/inprogress-report.model';
+import { Category } from '../models/category.model';
 import { InprogressCorrespondence } from '../models/inprogress-correspondence.model';
+import { InprogressReport } from '../models/inprogress-report.model';
+import { CategoriesService } from '../services/categories.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,7 +13,7 @@ import { InprogressCorrespondence } from '../models/inprogress-correspondence.mo
 export class ReportsService {
     private baseUrl = 'https://cts-qatar.d-intalio.com';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private CategoriesService: CategoriesService) { }
 
     listInProgressTransfers(params?: {
         structureIds?: number[],
@@ -26,7 +28,6 @@ export class ReportsService {
         formData.append('draw', '1');
         formData.append('start', params?.page ? ((params.page - 1) * 10).toString() : '0');
         formData.append('length', '10');
-
         if (params) {
             if (params.structureIds?.length) {
                 formData.append('StructureIds', params.structureIds.join(','));
@@ -50,10 +51,37 @@ export class ReportsService {
             console.log(key, value);
         });
 
+        // return this.http.post<ApiResponse<InprogressReport[]>>(
+        //     `${this.baseUrl}/Report/ListInProgressTransfers`,
+        //     formData
+        // );
         return this.http.post<ApiResponse<InprogressReport[]>>(
             `${this.baseUrl}/Report/ListInProgressTransfers`,
             formData
+        ).pipe(
+            switchMap((response: ApiResponse<InprogressReport[]>) => {
+                debugger
+                const transfers = (response as ApiResponse<InprogressReport[]>).data;
+                debugger
+                // Fetch categories
+                return this.CategoriesService.ListCategories().pipe(
+                    map((categories: Category[]) =>{
+                        const categoryMap = categories.reduce((map, category) => {
+                            map[category.id] = category.text; 
+                            return map;
+                        }, {} as { [key: number]: string });
+                      debugger
+                        const transformedTransfers = transfers.map(transfer => ({
+                            ...transfer,
+                            categoryName: categoryMap[transfer.categoryId] || 'Unknown' 
+                        }));
+    
+                        return { ...response, data: transformedTransfers }; 
+                    })
+                );
+            })
         );
+    
     }
 
     listCompletedTransfers(params?: {
@@ -94,9 +122,28 @@ export class ReportsService {
         });
 
         return this.http.post<ApiResponse<InprogressReport[]>>(
-            `${this.baseUrl}/Report/ListInProgressCorrespondences`,
+            `${this.baseUrl}/Report/ListCompletedTransfers`,
             formData
-        );
+        ).pipe(
+            switchMap((response: ApiResponse<InprogressReport[]>) => {
+                const transfers = (response as ApiResponse<InprogressReport[]>).data;
+                // Fetch categories
+                return this.CategoriesService.ListCategories().pipe(
+                    map((categories: Category[]) =>{
+                        const categoryMap = categories.reduce((map, category) => {
+                            map[category.id] = category.text; 
+                            return map;
+                        }, {} as { [key: number]: string });
+                        const transformedTransfers = transfers.map(transfer => ({
+                            ...transfer,
+                            categoryName: categoryMap[transfer.categoryId] || 'Unknown' 
+                        }));
+    
+                        return { ...response, data: transformedTransfers }; 
+                    })
+                );
+            })
+        );;
     }
 
     listInProgressCorrespondences(params: any): Observable<ApiResponse<InprogressCorrespondence[]>> {
@@ -135,6 +182,25 @@ export class ReportsService {
         return this.http.post<ApiResponse<InprogressCorrespondence[]>>(
             `${this.baseUrl}/Report/ListInProgressCorrespondences`,
             formData
+        ).pipe(
+            switchMap((response: ApiResponse<InprogressCorrespondence[]>) => {
+                const transfers = (response as ApiResponse<InprogressCorrespondence[]>).data;
+                // Fetch categories
+                return this.CategoriesService.ListCategories().pipe(
+                    map((categories: Category[]) =>{
+                        const categoryMap = categories.reduce((map, category) => {
+                            map[category.id] = category.text; 
+                            return map;
+                        }, {} as { [key: number]: string });
+                        const transformedTransfers = transfers.map(transfer => ({
+                            ...transfer,
+                            categoryName: categoryMap[transfer.categoryId] || 'Unknown'
+                        }));
+    
+                        return { ...response, data: transformedTransfers }; 
+                    })
+                );
+            })
         );
     }
 

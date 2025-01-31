@@ -1,6 +1,7 @@
 export interface InprogressReport {
   id: number;
   categoryId: number;
+  categoryName:string;
   referenceNumber: string | null;
   fromStructureId: number;
   fromStructure: string;
