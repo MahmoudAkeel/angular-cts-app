@@ -13,7 +13,7 @@ $color_11: var(--text-black);
 $color_12: #fff;
 $color_13: #46B3E5;
 $font-family_1: 'AktivGrotesk', 'Montserrat';
-$font-family_2: "Font Awesome 6 Free";
+$font-family_2: "FontAwesome";
 $font-family_3: FontAwesome;
 $background-color_1: #FFF;
 $background-color_2: #d3d3d3;
@@ -289,10 +289,6 @@ h2 {
 	font-weight: bold;
 	color: $color_5;
 	letter-spacing: 0.5px;
-}
-
-p {
-	color: $color_4;
 }
 
 .logo-section {
@@ -667,6 +663,11 @@ div.dt-container {
 	position: static !important;
 }
 
+.shadow.table-container.overflow-x-auto:has(.noData) {
+	margin-bottom: 1rem;
+	box-shadow: none !important;
+}
+
 input[type="number"] {
 	&::-webkit-inner-spin-button {
 		-webkit-appearance: none;
@@ -681,6 +682,7 @@ input[type="number"] {
 
 .form-group {
 	margin-bottom: 1rem;
+	position: relative;
 }
 
 textarea.form-control {
@@ -731,88 +733,66 @@ textarea.form-control {
 	}
 }
 
-.select2-container {
-	width: 100% !important;
-	border-radius: 10px;
+
+
+.ng-select-container {
+	height: 100%;
+	align-items: center;
 }
 
-.select2-container--default {
-	.select2-selection--single {
-		background-color: $background-color_6;
-		border: 0;
-		border-radius: 10px;
-		height: 42px;
-		display: flex;
-		align-items: center;
-
-		.select2-selection__rendered {
-			padding: 1rem;
-		}
-
-		.select2-selection__arrow {
-			right: 15px;
-		}
-	}
-
-	.select2-results__option--highlighted.select2-results__option--selectable {
-		background-color: $background-color_8;
-		color: $color_4;
-	}
-
-	.select2-search--dropdown {
-		.select2-search__field {
-			border-radius: 4px;
-			color: $color_11 !important;
-			outline: 0;
-		}
-	}
+.ng-select-container:after {
+	content: "\f107";
+	font-family: $font-family_2 !important;
+	color: $color_4;
 }
 
-.select2-container--default.select2-container--open {
-	.select2-selection--single {
-		border: 1px solid var(--light-blue-color);
-	}
+.ng-select-container.ng-select-opened:after {
+	content: "\f106";
 }
 
-.select2-selection__arrow {
-	b {
-		border: 0 !important;
-
-		&::before {
-			content: "\f107";
-			font-family: $font-family_2 !important;
-			color: $color_4;
-		}
-	}
+.ng-value-container:has(.ng-value-label:not(.ng-value-label:empty)) .ng-placeholder,
+.ng-select-container .ng-clear-wrapper {
+	display: none;
 }
 
-.select2-container--open {
-	.select2-selection__arrow {
-		b {
-			&::before {
-				content: "\f106";
-			}
-		}
-	}
-}
-
-.select2-dropdown {
+.ng-dropdown-panel {
+	top: 100%;
+	left: 0;
+	right: 0;
 	border: 0;
+	background-color: #fff;
 	box-shadow: 0px 3px 6px #69696929;
 }
 
-.select2-results__option {
+.ng-dropdown-panel .ng-option {
 	padding: 0.5rem 1rem;
-	user-select: none;
-	-webkit-user-select: none;
 	border-top: 1px solid #ededed;
 	color: $color_11;
 }
 
-.select2-results__option.select2-results__option--selectable.select2-results__option--selected {
+.ng-dropdown-panel .ng-option:hover {
 	color: $color_4;
-	background-color: $background-color_4 !important;
 }
+
+.ng-option.ng-option-selected {
+	color: $color_4;
+	background-color: $background-color_4;
+}
+
+.ng-select-multiple .ng-value {
+	margin: 0 0.25rem;
+	border: 1px solid var(--secondary-color);
+	padding: 0.15rem 0.5rem;
+	border-radius: 14px;
+	background: var(--light-blue-color);
+	background: var(--bs-gray-200);
+	font-size: 13px;
+	flex-direction: row-reverse;
+	display: flex;
+	gap: 0.25rem;
+	align-items: center;
+}
+
 
 .date-picker {
 	background-image: url('assets/images/icons/calendar.svg');
@@ -930,6 +910,65 @@ span.glyphicon.glyphicon-chevron-up {
 	}
 }
 
+.mat-datepicker-content {
+	box-shadow: 0px 3px 6px #69696929;
+	border-radius: 10px;
+}
+
+.mat-datepicker-content .mat-calendar {
+	width: 296px;
+	height: 340px;
+}
+
+.mat-datepicker-content td.mat-calendar-body-label {
+	font-size: 0;
+}
+
+.mat-datepicker-content .mat-calendar-controls {
+	justify-content: space-between;
+	margin-top: 0.5rem !important;
+	margin-bottom: 0.75rem !important;
+}
+
+.mat-datepicker-content td.mat-calendar-body-label[colspan="7"],
+.mat-calendar-period-button .mat-calendar-arrow,
+.mat-datepicker-content .mat-calendar-controls .mat-calendar-spacer {
+	display: none !important;
+}
+
+.mat-datepicker-content .mat-calendar-controls .mat-calendar-previous-button {
+	order: 1;
+	color: var(--secondary-color) !important;
+}
+
+.mat-datepicker-content .mat-calendar-controls .mat-calendar-period-button {
+	order: 2;
+}
+
+.mat-datepicker-content .mat-calendar-controls .mat-calendar-next-button {
+	order: 3;
+	color: var(--secondary-color) !important;
+}
+
+.mat-datepicker-content .mat-calendar-table-header th {
+	color: var(--text-color);
+	font-weight: bold;
+}
+
+.mat-datepicker-content .mat-calendar-body-cell-content.mat-focus-indicator {
+	border-radius: 8px;
+}
+
+.mat-datepicker-content .mat-calendar-body-selected {
+	background-color: var(--secondary-color) !important;
+}
+
+.mat-datepicker-content .mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+	border-color: var(--secondary-color) !important;
+}
+
+
+
 .delegation {
 	column-gap: 1rem;
 }
@@ -1016,6 +1055,17 @@ span.glyphicon.glyphicon-chevron-up {
 
 .cdk-overlay-pane.mat-mdc-dialog-panel {
 	max-width: unset !important;
+}
+
+label.form-label.required:after {
+	content: '*';
+	color: var(--danger);
+	margin: 0 0.25rem;
+}
+
+.error-msg {
+	color: var(--danger);
+	font-size: 11px;
 }
 
 @media screen and (max-width: 1600px) {
@@ -1225,6 +1275,14 @@ span.glyphicon.glyphicon-chevron-up {
 
 	textarea.form-control {
 		min-height: 250px;
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.error-msg {
+		position: absolute;
+		top: 3px;
+		right: 0;
 	}
 }
 
@@ -1551,4 +1609,26 @@ span.glyphicon.glyphicon-chevron-up {
 			width: 100%;
 		}
 	}
+}
+
+.position-relative>.table-container .dataTables_paginate.paging_full_numbers {
+	bottom: 0;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	box-shadow: none !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+	background: var(--light-blue-color);
+	border: 0;
+	border-radius: 9px;
+	color: var(--secondary-color) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	background: transparent;
+	color: var(--secondary-color) !important;
+	border-color: transparent;
 }

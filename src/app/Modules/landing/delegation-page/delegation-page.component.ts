@@ -155,13 +155,13 @@ export class DelegationPageComponent implements OnInit {
     this.lookupservice.getCategories(this.accessToken!, undefined).subscribe(
       (response) => {
         this.categories = response || [];
-        this.categories.unshift({ id: 0, text: 'Select Category' });
+        //this.categories.unshift({ id: 0, text: 'Select Category' });
 
-        if (this.categories.length > 0) {
+        /*if (this.categories.length > 0) {
           this.delegationForm.patchValue({
             categoryId: [this.categories[0] ?.id],
           });
-        }
+        }*/
       },
       (error: any) => {
         console.error(error);
@@ -187,20 +187,20 @@ export class DelegationPageComponent implements OnInit {
     );
   }
 
-  formatDate(date: NgbDateStruct | undefined): string {
+  formatDate(date: Date | undefined): string {
     if (!date) return '';
-    const month = date.month.toString().padStart(2, '0');
-    const day = date.day.toString().padStart(2, '0');
-    const year = date.year.toString();
-    return `${year}/${month}/${day}`;
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString();
+    return `${day}/${month}/${year}`;
   }
-
+  
   onEdit(item: Delegation): void {
     if (item) {
       this.isEdit = true;
       this.selectedRowId = item.id;
       this.selectedUserId = item.toUserValueText.id;
-
+  
       if (this.contacts && this.contacts.length > 0) {
         this.delegationForm.patchValue({
           userId: this.selectedUserId,
@@ -303,16 +303,16 @@ export class DelegationPageComponent implements OnInit {
     }
   }
 
-  convertToNgbDateStruct(dateStr: string): NgbDateStruct | undefined {
-    if (!dateStr) return undefined;
-    const [day, month, year] = dateStr.split('/');
-    return { year: +year, month: +month, day: +day };
+  convertToNgbDateStruct(dateStr: string): Date | null {
+    if (!dateStr) return null;
+    const [day, month, year] = dateStr.split('/').map(Number);
+    return new Date(year, month - 1, day);
   }
 
   resetDropDowns() {
     this.delegationForm.patchValue({
       userId: this.contacts.length > 0 ? this.contacts[0] ?.id : null, 
-      categoryId: this.categories.length > 0 ? [0] : [], 
+      categoryId: this.categories.length > 0 ? [] : [], 
       privacyId: this.privacy.length > 0 ? this.privacy[0] ?.id : null,
     });
   }

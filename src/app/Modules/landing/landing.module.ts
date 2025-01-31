@@ -24,8 +24,11 @@ import { ToasterComponent } from '../shared/toaster/toaster.component';
 import { ConfirmationmodalComponent } from '../shared/confirmationmodal/confirmationmodal.component'
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { HighchartsChartModule } from 'highcharts-angular'; 
+import { HighchartsChartModule } from 'highcharts-angular';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @NgModule({
   declarations: [
     DelegationPageComponent,
@@ -55,7 +58,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     ToasterComponent,
     ReactiveFormsModule,
     HighchartsChartModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class LandingModule { }
