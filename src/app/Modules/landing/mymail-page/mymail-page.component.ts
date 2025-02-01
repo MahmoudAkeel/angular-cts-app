@@ -1,13 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MailDetailsDialogComponent } from '../mail-details-dialog/mail-details-dialog.component';
 
 interface ApiResponseItem {
+  id: string;
+  documentId: string;
   subject: string;
   details: string;
   date: string;
   ref: string;
   isRead: boolean;
   isOverDue: boolean;
+  fromUser: string;
+  transferDate: string;
+  referenceNumber: string;
+  row: any;
 }
 
 @Component({
@@ -20,9 +29,14 @@ export class MymailPageComponent implements OnInit {
   newItems: ApiResponseItem[] = [];
   loading: boolean = true;
   dtOptions: DataTables.Settings = {};
+  structureId!: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router, private dialog: MatDialog) {
     this.accessToken = localStorage.getItem('access_token');
+    if (!this.accessToken) {
+      console.error('Access token not found');
+      return;
+    }
   }
 
   ngOnInit() {
@@ -50,41 +64,71 @@ export class MymailPageComponent implements OnInit {
     };
   }
 
+  private base64UrlDecode(str: string): string {
+    str = str.replace(/-/g, '+').replace(/_/g, '/');
+    switch (str.length % 4) {
+      case 2: str += '=='; break;
+      case 3: str += '='; break;
+    }
+    return decodeURIComponent(escape(window.atob(str)));
+  }
+
   fetchInboxData() {
     if (!this.accessToken) {
       console.error('Access token not found');
+      this.router.navigate(['/login']);
       return;
     }
+
+    const payload = this.accessToken.split('.')[1];
+    const decodedPayload = this.base64UrlDecode(payload);
+    const parsedPayload = JSON.parse(decodedPayload);
+    this.structureId = parsedPayload.StructureId;
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.accessToken}`,
     });
 
-    this.http.post<any>('https://cts-qatar.d-intalio.com/Transfer/ListInbox', {}, { headers })
-      .subscribe(response => {
-        console.log('API Response:', response); // Log the response
-        // Check if response.data is an array
-        if (Array.isArray(response.data)) {
+    const formData = new FormData();
+    formData.append('length', '1000');
+    formData.append('structureId', this.structureId);
+
+    this.http.post<any>('https://cts-qatar.d-intalio.com/Transfer/ListInbox', formData, { headers })
+      .subscribe({
+        next: (response) => {
           this.newItems = response.data.map((item: ApiResponseItem) => ({
             subject: item.subject,
-            details: `Transferred from: ${item.details}`,
-            date: item.date,
-            ref: item.ref,
+            details: `Transferred from: ${item.fromUser}`,
+            date: item.transferDate,
+            ref: item.referenceNumber,
             isRead: item.isRead,
             isOverDue: item.isOverDue,
+            id: item.id,
+            row: item
           }));
-        } else {
-          console.error('Unexpected response format:', response.data);
+          console.log('Inbox items:', this.newItems);
+        },
+        error: (error) => {
+          console.error('Error fetching inbox data:', error);
+        },
+        complete: () => {
+          this.loading = false;
         }
-        this.loading = false;
-      }, error => {
-        console.error('Error fetching inbox data:', error);
-        this.loading = false;
       });
   }
 
-  showMailDetails() {
-    // Implement the logic to show mail details
-    console.log('Show mail details');
+  showMailDetails(item: ApiResponseItem) {
+    debugger;
+    this.dialog.open(MailDetailsDialogComponent, {
+      disableClose: true,
+      width: '90%',
+      height: '90%',
+      data: {
+        id: item.id,
+        documentId: item.documentId,
+        referenceNumber: item.ref,
+        row: item.row
+      }
+    });
   }
 }
