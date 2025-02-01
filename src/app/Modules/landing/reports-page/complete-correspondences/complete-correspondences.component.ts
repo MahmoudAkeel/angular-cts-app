@@ -53,7 +53,7 @@ export class CompleteCorrespondencesComponent implements OnInit {
   pages: number[] = [];
 
   // Datatable properties
-  dtOptions: any = {};
+  dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject<any>();
 
   userSearchText: string = '';

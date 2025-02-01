@@ -50,6 +50,7 @@ export class SearchPageComponent {
   activityLogs: ActivityLogResponse[] = [];
   attributes: DocAttributesApiResponse | null = null;
   attachments: AttachmentsApiResponce[] | null = [];
+  visualTracking: any[] = [];
 
   loading: boolean = true; // Loading state
   constructor(
@@ -127,7 +128,7 @@ export class SearchPageComponent {
   }
 
   getCategories(): void {
-    this.lookupservice.getCategories(this.accessToken!, undefined).subscribe(
+    this.lookupservice.getCategories(undefined).subscribe(
       (response) => {
         this.categories = response || [];
 
@@ -139,7 +140,7 @@ export class SearchPageComponent {
   }
 
   getStatuses(): void {
-    this.lookupservice.getStatus(this.accessToken!).subscribe(
+    this.lookupservice.getStatus().subscribe(
       (response) => {
         this.statuses = response || [];
 
@@ -255,7 +256,7 @@ export class SearchPageComponent {
       },
         (error: any) => {
           console.error('Error getting search result:', error);
-          this.toaster.showToaster(error ?.message || 'Something went wrong');
+          this.toaster.showToaster(error?.message || 'Something went wrong');
         });
     });
 
@@ -382,25 +383,41 @@ export class SearchPageComponent {
     });
   }
 
+  getVisualTracking(docID: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.searchService.getVisualTracking(docID).subscribe(
+        (response) => {
+          this.visualTracking = response || [];
+          resolve(response);
+        },
+        (error: any) => {
+          console.error(error);
+          reject(error);
+        }
+      );
+    });
+  }
+
   async showDetails(row: any) {
 
-    const [attributes, nonArchAttachments, linkedDocs, activityLogs, notes, transHistory, attachments] = await Promise.all([
+    const [attributes, nonArchAttachments, linkedDocs, activityLogs, notes, transHistory, attachments, visualTracking] = await Promise.all([
       this.getAttributes(row.id),
       this.getNonArchAttachments(row.id),
       this.getLinkedDocuments(row.id),
       this.getActivityLogs(row.id),
       this.getNotes(row.id),
       this.getHistory(row.id),
-      this.getAttachments(row.id)
+      this.getAttachments(row.id),
+      this.getVisualTracking(row.id)
     ]);
-
+    debugger;
     this.dialog.open(MailDetailsDialogComponent, {
       disableClose: true,
       width: '90%',
       height: '90%',
       data: {
         rowData: row, notesData: notes, linkedDoc: linkedDocs, archAttach: nonArchAttachments,
-        logs: activityLogs, history: transHistory, mailAttachments: attachments
+        logs: activityLogs, history: transHistory, mailAttachments: attachments, visualTracking: visualTracking
       }
     });
 

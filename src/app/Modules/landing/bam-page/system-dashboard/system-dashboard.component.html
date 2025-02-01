@@ -3,39 +3,11 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card">
-                <span class="card-title">Average duration for correspondence completion</span>
-                <highcharts-chart id="donutChart"></highcharts-chart>
+                <app-chart-system-count-per-category-and-status [fromDate]="fromDate" [toDate]="toDate"
+                    [categories]="categories"></app-chart-system-count-per-category-and-status>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <span class="card-title">Average duration for correspondence completion</span>
-                <highcharts-chart id="lineChartContainer"></highcharts-chart>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <span class="card-title">Count per status grouped by category</span>
-                <highcharts-chart id="pieChartContainer"></highcharts-chart>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <span class="card-title">Count per status grouped by category</span>
-                <highcharts-chart id="pieChartContainer2"></highcharts-chart>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <span class="card-title">Count per status grouped by category</span>
-                <highcharts-chart id="columnChartContainer"></highcharts-chart>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <span class="card-title">Count per status grouped by category</span>
-                <highcharts-chart id="stackedColumnChart"></highcharts-chart>
-            </div>
-        </div>
+
+
     </div>
 </div>

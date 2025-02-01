@@ -72,19 +72,15 @@ export class LookupsService {
       );
   }
 
-  getCategories(accessToken: string, delegationId: string | undefined): Observable<any> {
 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    });
 
+  getCategories(delegationId: string | undefined): Observable<{ id: number, text: string }[]> {
     let params = new HttpParams();
     if (delegationId !== undefined) {
       params = params.set('delegationId', delegationId);
     }
 
-    return this.http.get(this.listCategories, { headers, params })
+    return this.http.get<{ id: number, text: string }[]>(this.listCategories, { params })
       .pipe(
         catchError((error) => {
           console.error('Error while fetching categories data', error.message);
@@ -155,22 +151,21 @@ export class LookupsService {
     return this.http.get(this.listImportance, { headers })
       .pipe(
         catchError((error) => {
-        console.error('Error while fetching Importance data', error.message);
+          console.error('Error while fetching Importance data', error.message);
           throw error;
         })
       );
   }
 
-  getStatus(accessToken: string): Observable<any> {
+  getStatus(): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     });
 
     return this.http.get(this.listStatus, { headers })
       .pipe(
         catchError((error) => {
-        console.error('Error while fetching Status data', error.message);
+          console.error('Error while fetching Status data', error.message);
           throw error;
         })
       );

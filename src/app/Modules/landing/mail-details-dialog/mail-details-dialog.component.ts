@@ -1,4 +1,4 @@
-﻿import { Component, Inject, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+﻿import { Component, Inject, ViewChild, ElementRef, AfterViewChecked, ChangeDetectorRef, AfterViewInit, Renderer2 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
@@ -7,13 +7,17 @@ import { DataTablesModule } from 'angular-datatables';
 import { MatTreeModule } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { AuthService } from '../../auth/auth.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 interface TreeNode {
+  id: number;
   name: string;
   children?: TreeNode[];
 }
 
 interface FlatTreeNode {
+  id: number;
   expandable: boolean;
   name: string;
   level: number;
@@ -28,10 +32,11 @@ interface FlatTreeNode {
 })
 
 export class MailDetailsDialogComponent implements AfterViewChecked {
+  @ViewChild('chartContainer', { static: false }) chartContainer!: ElementRef;
 
   @ViewChild('tabsContainer', { static: false }) tabsContainer!: ElementRef;
-//  tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
-  tabs = [ 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+  //  tabs = ['Transfer', 'Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
+  tabs = ['Attributes', 'Attachments', 'Notes', 'Linked correspondence', 'NonArchivedAttachment', 'Visual tracking', 'Transfers history', 'Activity log'];
   isScrollable: boolean = false;
   activeTabIndex: number = 0;
   selectedNode: any = null;
@@ -41,35 +46,19 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
   treeControl: FlatTreeControl<FlatTreeNode>;
   treeFlattener: MatTreeFlattener<TreeNode, FlatTreeNode>;
   dataSource: MatTreeFlatDataSource<TreeNode, FlatTreeNode>;
+  selectedDocumentId!: number;
+  documentViewerUrl!: SafeResourceUrl;
 
-  TREE_DATA: TreeNode[] = [
-    {
-      name: 'Documents',
-      children: [
-        {
-          name: 'Original document',
-          children: [
-            { name: '_نموذج مراسلة خارجية2.pdf' }
-          ]
-        }
-      ]
-    },
-    {
-      name: 'Documents',
-      children: [
-        {
-          name: 'Original document',
-          children: [
-            { name: '_نموذج مراسلة خارجية2.pdf' },
-            { name: '_نموذج مراسلة خارجية2.pdf' },
-            { name: '_نموذج مراسلة خارجية2.pdf' }
-          ]
-        }
-      ]
-    }
-  ];
+  TREE_DATA: TreeNode[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cdr: ChangeDetectorRef) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private authService: AuthService,
+    private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2
+  ) {
+    console.log("data", this.data);
     this.treeFlattener = new MatTreeFlattener(
       this._transformer,
       (node: FlatTreeNode) => node.level,
@@ -89,6 +78,7 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
 
   ngOnInit() {
     this.initDtOptions();
+
 
     // Transform the data passed to the dialog into tree data format
     if (this.data && this.data.mailAttachments) {
@@ -121,12 +111,14 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
     };
   }
 
+
+
   private transformAttachmentsToTree(mailAttachments: any[]): TreeNode[] {
     return mailAttachments.map(attachment => this.createTreeNode(attachment));
   }
 
   private createTreeNode(attachment: any): TreeNode {
-    const node: TreeNode = { name: attachment.text };  // Using 'text' as the name for the node
+    const node: TreeNode = { id: attachment.id, name: attachment.text };  // Using 'text' as the name for the node
 
     if (attachment.children && attachment.children.length > 0) {
       node.children = attachment.children.map((child: any) => this.createTreeNode(child));
@@ -168,6 +160,7 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
 
   private _transformer = (node: TreeNode, level: number): FlatTreeNode => {
     return {
+      id: node.id,
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       level: level
@@ -179,25 +172,42 @@ export class MailDetailsDialogComponent implements AfterViewChecked {
 
 
   selectNode(node: any, event: Event) {
+    debugger
     event.preventDefault();
     this.selectedNode = node;
+    if (this.selectedNode.id && this.selectedNode.id.startsWith('file_')) {
+      this.selectedDocumentId = this.selectedNode.id.split('_')[1];
+      this.getViewerUrl();
+
+    }
   }
 
-  Items = [
-    {
-      subject: 'Boeing 777F aircraft emergency equipment layout',
-      date: '10/08/2020 1:54pm',
-      ref: '2020/Out/04777/AS',
-    },
-    {
-      subject: 'Boeing 777F aircraft emergency equipment layout',
-      date: '10/08/2020 1:54pm',
-      ref: '2020/Out/04777/AS',
-    },
-    {
-      subject: 'Boeing 777F aircraft emergency equipment layout',
-      date: '10/08/2020 1:54pm',
-      ref: '2020/Out/04777/AS',
-    },
-  ];
+  getViewerUrl() {
+    debugger;
+    const baseUrl = 'https://java-qatar.d-intalio.com/VIEWER/file'; // Fixed URL
+    const token = this.authService.getToken();
+
+    if (!token) {
+      console.error("Token is missing or expired.");
+      return;
+    }
+
+    const params = {
+      documentId: +this.selectedDocumentId, // Try using the working document ID
+      language: 'en',
+      token: encodeURIComponent(token),
+      version: 'autocheck', // Try adding this
+      structId: 1,         // Try adding this
+      viewermode: 'view'
+    };
+
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+    this.documentViewerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`${baseUrl}?${queryString}`);
+    console.log("Viewer URL: ", this.documentViewerUrl);
+  }
+
+
 }
