@@ -21,6 +21,18 @@ export class BamPageComponent {
       imgSrc: 'assets/images/icons/BAM.png',
       title: 'System Dashboard',
       link: '/bam/system-dashboard',
+    },
+    {
+      backgroundColor: '#FEEAF3',
+      imgSrc: 'assets/images/icons/BAM.png',
+      title: 'Average Duration for Correspondence Completion',
+      link: '/bam/kpis/kpi-average-duration-for-correspondence-completion',
+    },
+    {
+      backgroundColor: '#FEEAF3',
+      imgSrc: 'assets/images/icons/BAM.png',
+      title: 'Average Duration for Correspondence Delay',
+      link: '/bam/kpis/kpi-average-duration-for-correspondence-delay',
     }
 
   ];
