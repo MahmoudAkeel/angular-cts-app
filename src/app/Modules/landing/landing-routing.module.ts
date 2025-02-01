@@ -14,6 +14,7 @@ import { InProgressCorrespondencesComponent } from './reports-page/in-progress-c
 import { DashboardComponent } from './bam-page/dashboard/dashboard.component';
 import { SystemDashboardComponent } from './bam-page/system-dashboard/system-dashboard.component';
 import { MasterLayoutComponent } from '../shared/master-layout/master-layout.component';
+import { CompleteCorrespondencesComponent } from './reports-page/complete-correspondences/complete-correspondences.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
       {
         path: 'reports/inprogress-correspondences',
         component: InProgressCorrespondencesComponent,
+      },
+      {
+        path: 'reports/completed-correspondences',
+        component: CompleteCorrespondencesComponent,
       },
       {
         path: 'search',

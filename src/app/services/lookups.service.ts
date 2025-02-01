@@ -89,16 +89,14 @@ export class LookupsService {
       );
   }
 
-  getEntities(accessToken: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${accessToken}`
-    });
+  getEntities(): Observable<any> {
+
 
     const formData = new FormData();
     formData.append('attributes[]', JSON.stringify("NameAr"));
     formData.append('attributes[]', JSON.stringify("NameFr"));
 
-    return this.http.post(this.listEntities, formData, { headers })
+    return this.http.post(this.listEntities, formData)
       .pipe(
         catchError((error) => {
           console.error('Error while entities data', error.message);

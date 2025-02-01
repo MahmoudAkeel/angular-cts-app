@@ -24,8 +24,9 @@ import { ToasterComponent } from '../shared/toaster/toaster.component';
 import { ConfirmationmodalComponent } from '../shared/confirmationmodal/confirmationmodal.component'
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { HighchartsChartModule } from 'highcharts-angular'; 
+import { HighchartsChartModule } from 'highcharts-angular';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CompleteCorrespondencesComponent } from './reports-page/complete-correspondences/complete-correspondences.component';
 @NgModule({
   declarations: [
     DelegationPageComponent,
@@ -39,6 +40,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     InprogressTransfersComponent,
     CompletedTransfersComponent,
     InProgressCorrespondencesComponent,
+    CompleteCorrespondencesComponent,
     ConfirmationmodalComponent
   ],
   imports: [

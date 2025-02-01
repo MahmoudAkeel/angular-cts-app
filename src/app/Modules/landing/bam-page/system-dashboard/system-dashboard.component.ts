@@ -3,11 +3,24 @@ import Highcharts from 'highcharts';
 import { ChartSystemCountPerCategoryAndStatusComponent } from './charts/chart-system-count-per-category-and-status/chart-system-count-per-category-and-status.component';
 import { Helpers } from '../../../shared/helpers';
 import { LookupsService } from '../../../../services/lookups.service';
+import { ChartSystemStatisticsPerDepartmentComponent } from './charts/chart-system-statistics-per-department/chart-system-statistics-per-department.component';
+import { ChartSystemDocumentsInProgressOverdueAndOnTimePerCategoryComponent } from './charts/chart-system-documents-inProgress-overdue-and-onTime-per-category/chart-system-documents-inProgress-overdue-and-onTime-per-category.component';
+import { ChartSystemDocumentsCompletedOverdueAndOnTimePerCategoryComponent } from './charts/chart-system-documents-completed-overdue-and-onTime-per-category/chart-system-documents-completed-overdue-and-onTime-per-category.component';
+import { ChartSystemTransfersInProgressOverdueAndOnTimePerCategoryComponent } from './charts/chart-system-transfers-inProgressOverdue-and-onTime-per-category/chart-system-transfers-inProgressOverdue-and-onTime-per-category.component';
+import { ChartSystemTransfersCompletedOverdueAndOnTimePerCategoryComponent } from './charts/chart-system-transfers-completed-overdue-and-onTime-per-category/chart-system-transfers-completed-overdue-and-onTime-per-category.component';
 
 @Component({
   selector: 'app-system-dashboard',
   standalone: true,
-  imports: [ChartSystemCountPerCategoryAndStatusComponent],
+  imports:
+    [
+      ChartSystemCountPerCategoryAndStatusComponent,
+      ChartSystemStatisticsPerDepartmentComponent,
+      ChartSystemDocumentsInProgressOverdueAndOnTimePerCategoryComponent,
+      ChartSystemDocumentsCompletedOverdueAndOnTimePerCategoryComponent,
+      ChartSystemTransfersInProgressOverdueAndOnTimePerCategoryComponent,
+      ChartSystemTransfersCompletedOverdueAndOnTimePerCategoryComponent
+    ],
   templateUrl: './system-dashboard.component.html',
   styleUrl: './system-dashboard.component.scss'
 })

@@ -86,4 +86,64 @@ export class ChartsService {
       .set('structureId', structureId);
     return this.http.post<{ overDue: any[], onTime: { categoryId: number, count: number }[] }>(`${this.baseUrl}/Dashboard/GetCountPerCategoryAndStatus`, { params });
   }
+
+  GetStatisticsPerDepartment({ fromDate, toDate, structureIds }: { fromDate: string, toDate: string, structureIds?: string[] | null }): Observable<{ overDue: any[], onTime: { categoryId: number, count: number }[] }> {
+    let params = new HttpParams()
+      .set('fromDate', fromDate)
+      .set('toDate', toDate);
+
+    if (structureIds && structureIds.length > 0) {
+      params = params.set('structureIds', structureIds.join(','));
+    }
+
+    return this.http.post<{ overDue: any[], onTime: { categoryId: number, count: number }[] }>(`${this.baseUrl}/Dashboard/GetStatisticsPerDepartment`, { params });
+  }
+
+  GetDocumentsInProgressOverdueAndOnTimePerCategory({ fromDate, toDate, structureIds }: { fromDate: string, toDate: string, structureIds?: string[] | null }): Observable<{ overDue: any[], onTime: { categoryId: number, count: number }[] }> {
+    let params = new HttpParams()
+      .set('fromDate', fromDate)
+      .set('toDate', toDate);
+
+    if (structureIds && structureIds.length > 0) {
+      params = params.set('structureIds', structureIds.join(','));
+    }
+    return this.http.post<{ overDue: any[], onTime: { categoryId: number, count: number }[] }>(`${this.baseUrl}/Dashboard/GetDocumentsInProgressOverdueAndOnTimePerCategory`, { params });
+  }
+
+  GetDocumentsCompletedOverdueAndOnTimePerCategory
+    ({ fromDate, toDate, structureIds }: { fromDate: string, toDate: string, structureIds?: string[] | null }): Observable<{ overDue: any[], onTime: { categoryId: number, count: number }[] }> {
+    let params = new HttpParams()
+      .set('fromDate', fromDate)
+      .set('toDate', toDate);
+
+    if (structureIds && structureIds.length > 0) {
+      params = params.set('structureIds', structureIds.join(','));
+    }
+    return this.http.post<{ overDue: any[], onTime: { categoryId: number, count: number }[] }>(`${this.baseUrl}/Dashboard/GetDocumentsCompletedOverdueAndOnTimePerCategory`, { params });
+  }
+
+  GetTransfersInProgressOverdueAndOnTimePerCategory
+    ({ fromDate, toDate, structureIds }: { fromDate: string, toDate: string, structureIds?: string[] | null }): Observable<{ overDue: any[], onTime: { categoryId: number, count: number }[] }> {
+    let params = new HttpParams()
+      .set('fromDate', fromDate)
+      .set('toDate', toDate);
+
+    if (structureIds && structureIds.length > 0) {
+      params = params.set('structureIds', structureIds.join(','));
+    }
+    return this.http.post<{ overDue: any[], onTime: { categoryId: number, count: number }[] }>(`${this.baseUrl}/Dashboard/GetTransfersInProgressOverdueAndOnTimePerCategory`, { params });
+  }
+
+  GetTransfersCompletedOverdueAndOnTimePerCategory
+    ({ fromDate, toDate, structureIds }: { fromDate: string, toDate: string, structureIds?: string[] | null }): Observable<{ overDue: any[], onTime: { categoryId: number, count: number }[] }> {
+    let params = new HttpParams()
+      .set('fromDate', fromDate)
+      .set('toDate', toDate)
+
+    if (structureIds && structureIds.length > 0) {
+      params = params.set('structureIds', structureIds.join(','));
+    }
+    return this.http.post<{ overDue: any[], onTime: { categoryId: number, count: number }[] }>(`${this.baseUrl}/Dashboard/GetTransfersCompletedOverdueAndOnTimePerCategory`, { params });
+  }
+
 }

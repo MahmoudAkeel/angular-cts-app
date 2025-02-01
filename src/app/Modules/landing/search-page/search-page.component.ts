@@ -85,7 +85,7 @@ export class SearchPageComponent {
   }
 
   getEntites(): void {
-    this.lookupservice.getEntities(this.accessToken!).subscribe(
+    this.lookupservice.getEntities().subscribe(
       (response) => {
         this.entities = response || [];
         this.entities.unshift({ id: 0, name: 'Select Entity' });
