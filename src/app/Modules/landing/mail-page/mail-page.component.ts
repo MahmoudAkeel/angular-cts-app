@@ -214,7 +214,7 @@ export class MailPageComponent implements OnInit {
         id: item.id,
         documentId: item.documentId,
         referenceNumber: item.ref,
-        row: item
+        row: item.row
       }
     });
   }

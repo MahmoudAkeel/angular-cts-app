@@ -1,16 +1,15 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { KpiService } from '../../../../../../services/kpi.service';
-import { Subject } from 'rxjs';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { DataTableDirective, DataTablesModule } from 'angular-datatables';
+import { KpiService } from '../../../../../../services/kpi.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DataTablesModule } from 'angular-datatables';
-import { DataTableDirective } from 'angular-datatables';
+import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-table-structure-average-duration-for-correspondence-completion',
-  templateUrl: './table-structure-average-duration-for-correspondence-completion.component.html',
-  styleUrls: ['./table-structure-average-duration-for-correspondence-completion.component.css'],
+  selector: 'app-kpi-table-average-duration-for-transfer-delay',
+  templateUrl: './kpi-table-average-duration-for-transfer-delay.component.html',
+  styleUrls: ['./kpi-table-average-duration-for-transfer-delay.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -19,13 +18,13 @@ import { DataTableDirective } from 'angular-datatables';
     FormsModule
   ]
 })
-export class TableStructureAverageDurationForCorrespondenceCompletionComponent implements OnInit {
+export class KpiTableAverageDurationForTransferDelayComponent implements OnInit {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
   data: any[] = [];
   totalAverage: number = 0;
-  @Input() year!: number;
+  @Input() year: number = 2025;
   @Input() entities: any[] = [];
   // Pagination
   currentPage: number = 1;
@@ -42,10 +41,9 @@ export class TableStructureAverageDurationForCorrespondenceCompletionComponent i
   constructor(private kpiService: KpiService) { }
 
   ngOnInit() {
-    this.getTotalAverage();
     this.initDtOptions();
     this.loadData();
-
+    this.getTotalAverage();
   }
 
   ngOnChanges() {
@@ -77,7 +75,7 @@ export class TableStructureAverageDurationForCorrespondenceCompletionComponent i
   }
 
   private loadData() {
-    this.kpiService.ListStructureAverageDurationForCorrespondenceCompletion(this.year).subscribe((response: any) => {
+    this.kpiService.ListStructureAverageDurationForTransferDelay(this.year).subscribe((response: any) => {
       // Map the data to include both structureId and structureName
       this.data = response.data.map((item: any) => {
         const entity = this.entities.find(e => e.id === item.structureId);
@@ -95,7 +93,7 @@ export class TableStructureAverageDurationForCorrespondenceCompletionComponent i
 
   getTotalAverage() {
     this.kpiService
-      .GetAverageDurationForCorrespondenceCompletion(this.year)
+      .GetAverageDurationForCorrespondenceDelay(this.year)
       .subscribe((res: any) => {
         this.totalAverage = res.totalAverage;
       });

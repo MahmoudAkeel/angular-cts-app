@@ -6,15 +6,15 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card">
-        <app-chart-average-duration-for-correspondence-completion
-          [year]="year"></app-chart-average-duration-for-correspondence-completion>
+        <app-kpi-chart-average-duration-for-transfer-completion
+          [year]="year"></app-kpi-chart-average-duration-for-transfer-completion>
       </div>
     </div>
 
     <div class="col-md-12" *ngIf="entities && entities.length > 0">
       <div class="card">
-        <app-table-structure-average-duration-for-correspondence-completion [year]="year"
-          [entities]="entities"></app-table-structure-average-duration-for-correspondence-completion>
+        <app-kpi-table-average-duration-for-transfer-completion [year]="year"
+          [entities]="entities"></app-kpi-table-average-duration-for-transfer-completion>
       </div>
     </div>
   </div>

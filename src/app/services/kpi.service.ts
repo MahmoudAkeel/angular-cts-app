@@ -34,4 +34,32 @@ export class KpiService {
     formData.append('year', year.toString());
     return this.http.post(`${this.baseUrl}/Dashboard/ListStructureAverageDurationForCorrespondenceDelay`, formData);
   }
+
+
+  GetAverageDurationForTransferCompletion(year: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('year', year.toString());
+    return this.http.post(`${this.baseUrl}/Dashboard/GetAverageDurationForTransferCompletion`, formData);
+  }
+
+  ListStructureAverageDurationForTransferCompletion(year: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('year', year.toString());
+    return this.http.post(`${this.baseUrl}/Dashboard/ListStructureAverageDurationForTransferCompletion`, formData);
+  }
+
+
+  GetAverageDurationForTransferDelay(year: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('year', year.toString());
+    return this.http.post(`${this.baseUrl}/Dashboard/GetAverageDurationForTransferDelay`, formData);
+  }
+
+  ListStructureAverageDurationForTransferDelay(year: number): Observable<any> {
+    const formData = new FormData();
+    formData.append('year', year.toString());
+    return this.http.post(`${this.baseUrl}/Dashboard/ListStructureAverageDurationForTransferDelay`, formData);
+  }
+
+
 }

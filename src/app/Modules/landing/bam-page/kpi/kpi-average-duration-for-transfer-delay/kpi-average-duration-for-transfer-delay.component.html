@@ -1,20 +1,20 @@
 <h1 class="page-title d-flex justify-content-between align-items-center">
-  <span>Average duration for correspondence completion</span>
+  <span>Average duration for transfer delay</span>
   <i class="fa fa-filter cursor-pointer" (click)="isModalOpen = true"></i>
 </h1>
 <div class="charts" *ngIf="availableYears && availableYears.length > 0 && year">
   <div class="row">
     <div class="col-md-12">
       <div class="card">
-        <app-chart-average-duration-for-correspondence-completion
-          [year]="year"></app-chart-average-duration-for-correspondence-completion>
+        <app-kpi-chart-average-duration-for-transfer-delay
+          [year]="year"></app-kpi-chart-average-duration-for-transfer-delay>
       </div>
     </div>
 
     <div class="col-md-12" *ngIf="entities && entities.length > 0">
       <div class="card">
-        <app-table-structure-average-duration-for-correspondence-completion [year]="year"
-          [entities]="entities"></app-table-structure-average-duration-for-correspondence-completion>
+        <app-kpi-table-average-duration-for-transfer-delay [year]="year"
+          [entities]="entities"></app-kpi-table-average-duration-for-transfer-delay>
       </div>
     </div>
   </div>

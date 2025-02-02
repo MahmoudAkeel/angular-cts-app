@@ -33,6 +33,18 @@ export class BamPageComponent {
       imgSrc: 'assets/images/icons/BAM.png',
       title: 'Average Duration for Correspondence Delay',
       link: '/bam/kpis/kpi-average-duration-for-correspondence-delay',
+    },
+    {
+      backgroundColor: '#FEEAF3',
+      imgSrc: 'assets/images/icons/BAM.png',
+      title: 'Average duration for transfer completion',
+      link: '/bam/kpis/kpi-average-duration-for-transfer-completion',
+    },
+    {
+      backgroundColor: '#FEEAF3',
+      imgSrc: 'assets/images/icons/BAM.png',
+      title: 'Average duration for transfer delay',
+      link: '/bam/kpis/kpi-average-duration-for-transfer-delay',
     }
 
   ];

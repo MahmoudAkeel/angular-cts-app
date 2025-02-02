@@ -45,6 +45,7 @@ export class KpiTableAverageDurationForCorrespondenceDelayComponent implements O
   ngOnInit() {
     this.initDtOptions();
     this.loadData();
+    this.getTotalAverage();
   }
 
   ngOnChanges() {
@@ -87,10 +88,17 @@ export class KpiTableAverageDurationForCorrespondenceDelayComponent implements O
         };
       });
       this.totalItems = response.recordsTotal;
-      this.totalAverage = response.data.reduce((acc: number, item: any) => acc + item.average, 0) / response.data.length;
       this.calculatePagination();
       this.dtTrigger.next(null);
     });
+  }
+
+  getTotalAverage() {
+    this.kpiService
+      .GetAverageDurationForCorrespondenceDelay(this.year)
+      .subscribe((res: any) => {
+        this.totalAverage = res.totalAverage;
+      });
   }
 
   drawStructureUserTable(type: string, average: number, year: number, userId: number | null, structureId: number) {
